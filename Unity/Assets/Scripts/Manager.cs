@@ -39,6 +39,13 @@ public class Manager : MonoBehaviour {
 		return Convert.ToChar(i + 48);
 	}
 
+	public static TileType CharToTileType(char c) {
+		if (c == '0') return TileType.Empty;
+		else if (c == '1') return TileType.Ground;
+		else if (c == 'g') return TileType.Gun;
+		else return TileType.NONE;
+	}
+
 	// Use this for initialization
 	void Start () {
 	

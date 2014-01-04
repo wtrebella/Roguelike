@@ -16,7 +16,7 @@ public class Player : MonoBehaviour {
 
 	[HideInInspector] public Transform currentClimbable;
 	[HideInInspector] public Direction facingDirection = Direction.Right;
-
+	
 	protected Manager manager;
 	protected bool lastActionWasJump = false; // eventually you might add other positive y velocity things like springs, which will turn this false
 	protected int originalPlatformMask;
@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
 		playerSpriteObject = GameObject.Find("Player Sprite").transform;
+		Camera.main.GetComponent<CameraFollow>().objectToFollow = this.gameObject;
 
 //		animationStateWalk = Animator.StringToHash("PlayerWalk");
 //		animationStateStand = Animator.StringToHash("PlayerStand");
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void Start() {
-		
+
 	}
 
 	void Update() {
