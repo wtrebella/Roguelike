@@ -43,9 +43,7 @@ public class Gun : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {
-		if (coll.tag == "Player") {
-			Player player = coll.GetComponent<Player>();
-			player.GetComponentInChildren<GunHolder>().PickupGun(this);
-		}
+		GunHolder otherGunHolder = coll.GetComponentInChildren<GunHolder>();
+		if (otherGunHolder != null) otherGunHolder.PickupGun(this);
 	}
 }

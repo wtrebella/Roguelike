@@ -26,7 +26,6 @@ public class Player : MonoBehaviour {
 	protected Vector3 climbStartPos = Vector3.zero;
 	protected float climbStartTime = 0;
 	protected CharacterController2D controller;
-	protected Transform playerSpriteObject;
 	protected bool isClimbing = false;
 //	protected Animator animator;
 //	protected int animationStateWalk;
@@ -38,7 +37,6 @@ public class Player : MonoBehaviour {
 	void Awake() {
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
-		playerSpriteObject = GameObject.Find("Player Sprite").transform;
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 		gunHolder = GameObject.Find("Gun Holder").GetComponent<GunHolder>();
 
