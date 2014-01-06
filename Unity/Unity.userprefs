@@ -1,24 +1,24 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Bullet.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player.cs">
     <Files>
       <File FileName="Assets/Scripts/DataTypes/Room.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Managers/LevelManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Manager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Managers/LevelManager.cs" Line="71" Column="9" />
+      <File FileName="Assets/Scripts/Manager.cs" Line="14" Column="31" />
       <File FileName="Assets/Scripts/DataTypes/Tile.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/DataTypes/Map.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Managers/TileManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Enums.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/RoomTemplates.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Enums.cs" Line="38" Column="12" />
+      <File FileName="Assets/Scripts/RoomTemplates.cs" Line="32" Column="28" />
       <File FileName="Assets/Scripts/Managers/SpriteManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Player.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Gun.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GunHolder.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/TileData.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Bullet.cs" Line="88" Column="4" />
+      <File FileName="Assets/Scripts/Player.cs" Line="67" Column="34" />
+      <File FileName="Assets/Scripts/Gun.cs" Line="21" Column="3" />
+      <File FileName="Assets/Scripts/GunHolder.cs" Line="29" Column="1" />
+      <File FileName="Assets/Scripts/TileData.cs" Line="25" Column="4" />
+      <File FileName="Assets/Scripts/Bullet.cs" Line="51" Column="29" />
       <File FileName="Assets/Scripts/CharacterController2D.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/CameraFollow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GroundTile.cs" Line="10" Column="2" />
+      <File FileName="Assets/Scripts/GroundTile.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

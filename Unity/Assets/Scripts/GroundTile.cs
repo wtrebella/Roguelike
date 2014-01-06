@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class GroundTile : MonoBehaviour {
+	public AudioClip explosionSound;
 
 	// Use this for initialization
 	void Start () {
@@ -15,5 +16,6 @@ public class GroundTile : MonoBehaviour {
 
 	public void Destroy() {
 		GameObject.Destroy(this.gameObject);
+		AudioSource.PlayClipAtPoint(explosionSound, Vector3.zero);
 	}
 }

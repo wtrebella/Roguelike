@@ -4,8 +4,9 @@ using System.Collections;
 public class GunHolder : MonoBehaviour {
 	public Vector3 localGunAttachPos = Vector3.zero;
 	public float delayAfterGunPickup = 1;
-	public Direction facingDirection = Direction.Right;
+	public AudioClip pickupSound;
 
+	[HideInInspector] public Direction facingDirection = Direction.Right;
 	[HideInInspector] public Gun currentGun = null;
 
 	protected float timeOfLastGunPickup = 0;
@@ -29,6 +30,8 @@ public class GunHolder : MonoBehaviour {
 			if (gun.gunType == currentGun.gunType) return;
 			else DropGun();
 		}
+
+		AudioSource.PlayClipAtPoint(pickupSound, Vector3.zero);
 
 		timeOfLastGunPickup = Time.time;
 		currentGun = gun;

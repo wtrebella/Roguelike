@@ -41,7 +41,6 @@ public class Player : MonoBehaviour {
 		playerSpriteObject = GameObject.Find("Player Sprite").transform;
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 		gunHolder = GameObject.Find("Gun Holder").GetComponent<GunHolder>();
-		Camera.main.GetComponent<CameraFollow>().objectToFollow = this.gameObject;
 
 //		animationStateWalk = Animator.StringToHash("PlayerWalk");
 //		animationStateStand = Animator.StringToHash("PlayerStand");
@@ -58,7 +57,7 @@ public class Player : MonoBehaviour {
 	void Update() {
 		gunHolder.facingDirection = facingDirection;
 
-		if (InputManager.ActiveDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.F)) {
+		if (InputManager.ActiveDevice.RightTrigger.WasPressed || InputManager.ActiveDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.F)) {
 			if (gunHolder.currentGun != null) {
 				gunHolder.currentGun.Shoot();
 			}
