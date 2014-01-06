@@ -36,7 +36,9 @@ public class LevelManager : MonoBehaviour {
 
 		Tile randomEmptyTile = emptyTiles[Random.Range(0, emptyTiles.Count)];
 
-		player.transform.position = GetTileOrigin(randomEmptyTile);
+		Vector3 newPos = GetTileOrigin(randomEmptyTile);
+		newPos.y += manager.tileSize / 2f;
+		player.transform.position = newPos;
 	}
 	
 	void Update() {
@@ -68,6 +70,7 @@ public class LevelManager : MonoBehaviour {
 							if (tdg.gunType != GunType.NONE) {
 								Gun newGun = null;
 								if (tdg.gunType == GunType.Pistol) newGun = ((GameObject)Instantiate(pistolPrefab)).GetComponent<Gun>();
+								newGun.transform.rotation = Quaternion.identity;
 								newGun.transform.parent = tileMap.transform;
 								newGun.name = newGun.gunType.ToString();
 								newGun.transform.position = tileOrigin;

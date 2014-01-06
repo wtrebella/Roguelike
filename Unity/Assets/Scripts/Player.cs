@@ -156,7 +156,7 @@ public class Player : MonoBehaviour {
 			//animator.Play(animationStateJump);
 			isClimbing = false;
 			
-			if (InputManager.ActiveDevice.Direction.y < 0 || Input.GetKey(KeyCode.DownArrow) && currentGroundTile != null && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
+			if ((InputManager.ActiveDevice.Direction.y < 0 || Input.GetKey(KeyCode.DownArrow) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
 				velocity.y = 0;
 				StartCoroutine(TemporarilyTurnOffGroundCollisions(0.05f));
 			}
