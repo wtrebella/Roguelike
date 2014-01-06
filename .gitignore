@@ -16,7 +16,6 @@ TestResults
 # Build results
 Unity/Temp/
 Unity/Library/
-[Dd]ebug/
 [Rr]elease/
 x64/
 *_i.c
