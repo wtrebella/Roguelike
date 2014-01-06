@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
+	public float gravityMultiplier = 1;
 	public BulletType bulletType;
-	public Direction direction;
 
-	protected float gravityMultiplier;
+	protected Direction direction;
 	protected Vector3 velocity;
 	protected Gun gun;
 	protected Manager manager;
@@ -17,17 +17,15 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void Start () {
-		if (direction == Direction.Left) velocity *= -1;
+
 	}
 	
 	void Update () {
 		if (!hasBeenSetup || !hasShot) return;
 
-		if (bulletType == BulletType.Pistol) {
-			velocity.y += manager.gravity * gravityMultiplier * Time.deltaTime;
+		velocity.y += manager.gravity * gravityMultiplier * Time.deltaTime;
 
-			transform.position += velocity * Time.deltaTime;
-		}
+		transform.position += velocity * Time.deltaTime;
 
 		if ((transform.position - gun.transform.position).magnitude > 50) Destroy();
 	}
@@ -45,40 +43,27 @@ public class Bullet : MonoBehaviour {
 	public void SetGun(Gun gun) {
 		this.gun = gun;
 
-		GetComponent<SpriteRenderer>().color = gun.spriteRenderer.color;
 		direction = gun.currentGunHolder.facingDirection;
 		transform.position = gun.transform.position;
+		velocity = gun.shootVelocity;
+
 		int dirMultiplier = direction == Direction.Right?1:-1;
-		Vector3 exitPointDelta = Vector3.zero;
-
-		if (gun.gunType == GunType.Pistol) {
-			gravityMultiplier = manager.pistolBulletGravityMultiplier;
-			velocity = manager.pistolShootVelocity;
-			exitPointDelta = manager.pistolBulletExitPoint;
-		}
-
-		else if (gun.gunType == GunType.PistolBlue) {
-			gravityMultiplier = manager.pistolBlueBulletGravityMultiplier;
-			velocity = manager.pistolBlueShootVelocity;
-			exitPointDelta = manager.pistolBlueBulletExitPoint;
-		}
-
-		else if (gun.gunType == GunType.PistolGreen) {
-			gravityMultiplier = manager.pistolGreenBulletGravityMultiplier;
-			velocity = manager.pistolGreenShootVelocity;
-			exitPointDelta = manager.pistolGreenBulletExitPoint;
-		}
-
-		else if (gun.gunType == GunType.PistolRed) {
-			gravityMultiplier = manager.pistolRedBulletGravityMultiplier;
-			velocity = manager.pistolRedShootVelocity;
-			exitPointDelta = manager.pistolRedBulletExitPoint;
-		}
+		Vector3 exitPointDelta = gun.bulletExitPoint;
 
 		exitPointDelta.x *= dirMultiplier;
-		
+		velocity.x *= dirMultiplier;
+
+		velocity = Quaternion.Euler(0, 0, Random.Range(-gun.angleOfSpread / 2f, gun.angleOfSpread / 2f)) * velocity;
+
 		transform.position += exitPointDelta;
 
 		hasBeenSetup = true;
+	}
+
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (coll.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+			coll.GetComponent<GroundTile>().Destroy();
+			Destroy();
+		}
 	}
 }

@@ -33,6 +33,9 @@ public enum GroundTileType {
 
 public enum BulletType {
 	Pistol,
+	PistolBlue,
+	PistolGreen,
+	PistolRed,
 	NONE
 }
 

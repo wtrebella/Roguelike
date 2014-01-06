@@ -2,15 +2,20 @@
 using System.Collections;
 
 public class Gun : MonoBehaviour {
-	public GunType gunType {get; private set;}
+	public GunType gunType;
 	public GameObject bulletPrefab;
+	public Vector3 shootVelocity;
+	public Vector3 bulletExitPoint;
+	public float angleOfSpread = 0;
 
 	[HideInInspector] public GunHolder currentGunHolder = null;
 	[HideInInspector] public SpriteRenderer spriteRenderer;
 
+	protected Animator animator;
 	protected Manager manager;
 
 	void Awake() {
+		animator = GetComponentInChildren<Animator>();
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 	}
@@ -29,15 +34,7 @@ public class Gun : MonoBehaviour {
 		Bullet bullet = ((GameObject)Instantiate(bulletPrefab)).GetComponent<Bullet>();
 		bullet.SetGun(this);
 		bullet.Shoot();
-	}
-
-	public void SetupAsGunType(GunType gunType) {
-		this.gunType = gunType;
-
-		if (gunType == GunType.Pistol) spriteRenderer.color = Color.white;
-		else if (gunType == GunType.PistolBlue) spriteRenderer.color = Color.blue;
-		else if (gunType == GunType.PistolGreen) spriteRenderer.color = Color.green;
-		else if (gunType == GunType.PistolRed) spriteRenderer.color = Color.red;
+		if (animator != null) animator.SetTrigger("Shoot");
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {

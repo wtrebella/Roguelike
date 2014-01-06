@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour {
 	public int levelNum = 0;
-	public GameObject gunPrefab;
+	public GameObject pistolPrefab;
 
 	protected Map map;
 	protected TileManager tileManager;
@@ -64,11 +64,14 @@ public class LevelManager : MonoBehaviour {
 							newTile.parent = tileMap.transform;
 						}
 						else if (tile.tileData.tileType == TileType.Gun) {
-							Gun newGun = ((GameObject)Instantiate(gunPrefab)).GetComponent<Gun>();
-							newGun.SetupAsGunType((GunType)Random.Range(0, 4));
-							newGun.transform.parent = tileMap.transform;
-							newGun.name = newGun.gunType.ToString();
-							newGun.transform.position = tileOrigin;
+							TileDataGun tdg = (TileDataGun)tile.tileData;
+							if (tdg.gunType != GunType.NONE) {
+								Gun newGun = null;
+								if (tdg.gunType == GunType.Pistol) newGun = ((GameObject)Instantiate(pistolPrefab)).GetComponent<Gun>();
+								newGun.transform.parent = tileMap.transform;
+								newGun.name = newGun.gunType.ToString();
+								newGun.transform.position = tileOrigin;
+							}
 						}
 					}
 				}

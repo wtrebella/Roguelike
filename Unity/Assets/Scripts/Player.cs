@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using InControl;
 
 public enum Direction {
 	Right,
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour {
 	void Update() {
 		gunHolder.facingDirection = facingDirection;
 
-		if (Input.GetKeyDown(KeyCode.F)) {
+		if (InputManager.ActiveDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.F)) {
 			if (gunHolder.currentGun != null) {
 				gunHolder.currentGun.Shoot();
 			}
@@ -84,16 +85,16 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateWalking(ref Vector3 velocity) {
-		if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
+		if (InputManager.ActiveDevice.Direction.x > 0 || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
 			velocity.x = runSpeed;
-			
+
 			Face(Direction.Right);
 			
 			//if (controller.isGrounded) animator.Play(animationStateWalk);
 		}
-		else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
+		else if (InputManager.ActiveDevice.Direction.x < 0 || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
 			velocity.x = -runSpeed;
-			
+
 			Face(Direction.Left);
 			
 			//if (controller.isGrounded) animator.Play(animationStateWalk);
@@ -153,12 +154,12 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateJumping(ref Vector3 velocity) {
-		if ((controller.isGrounded || isClimbing) && (Input.GetKeyDown(KeyCode.Space))) {
+		if ((controller.isGrounded || isClimbing) && (Input.GetKeyDown(KeyCode.Space) || InputManager.ActiveDevice.Action1.WasPressed)) {
 			lastActionWasJump = true;
 			//animator.Play(animationStateJump);
 			isClimbing = false;
 			
-			if (Input.GetKey(KeyCode.DownArrow) && currentGroundTile != null && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
+			if (InputManager.ActiveDevice.Direction.y < 0 || Input.GetKey(KeyCode.DownArrow) && currentGroundTile != null && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
 				velocity.y = 0;
 				StartCoroutine(TemporarilyTurnOffGroundCollisions(0.05f));
 			}
@@ -169,7 +170,7 @@ public class Player : MonoBehaviour {
 
 		// cut jump short if you release space early
 		if (lastActionWasJump) {
-			if (Input.GetKeyUp(KeyCode.Space) && controller.velocity.y > 0) {
+			if (InputManager.ActiveDevice.Action1.WasReleased || Input.GetKeyUp(KeyCode.Space) && controller.velocity.y > 0) {
 				velocity.y *= 0.35f;
 			}
 		}

@@ -23,18 +23,6 @@ public class TileData {
 			td = new TileDataGun();
 			(td as TileDataGun).gunType = GunType.Pistol;
 		}
-		else if (c == 'g') {
-			td = new TileDataGun();
-			(td as TileDataGun).gunType = GunType.PistolGreen;
-		}
-		else if (c == 'r') {
-			td = new TileDataGun();
-			(td as TileDataGun).gunType = GunType.PistolRed;
-		}
-		else if (c == 'b') {
-			td = new TileDataGun();
-			(td as TileDataGun).gunType = GunType.PistolBlue;
-		}
 		
 		return td;
 	}
