@@ -12,6 +12,21 @@ public class Manager : MonoBehaviour {
 	public float gravity = -50;
 	public float tileSize = 0.7f;
 
+	public Vector3 pistolShootVelocity;
+	public Vector3 pistolBlueShootVelocity;
+	public Vector3 pistolGreenShootVelocity;
+	public Vector3 pistolRedShootVelocity;
+	
+	public Vector3 pistolBulletExitPoint;
+	public Vector3 pistolBlueBulletExitPoint;
+	public Vector3 pistolRedBulletExitPoint;
+	public Vector3 pistolGreenBulletExitPoint;
+
+	public float pistolBulletGravityMultiplier = 1;
+	public float pistolBlueBulletGravityMultiplier = 1;
+	public float pistolGreenBulletGravityMultiplier = 1;
+	public float pistolRedBulletGravityMultiplier = 1;
+
 	public static Rect GetScreenRectInWorldPoints() {
 		Vector3 screenOrigin = Camera.main.ViewportToScreenPoint(new Vector3(0, 0, 0));
 		Vector3 screenExtents = Camera.main.ViewportToScreenPoint(new Vector3(1, 1,  0));
@@ -37,13 +52,6 @@ public class Manager : MonoBehaviour {
 		if (i > 9 || i < 0) throw new UnityException("not set up for multi-digit or negative ints");
 		
 		return Convert.ToChar(i + 48);
-	}
-
-	public static TileType CharToTileType(char c) {
-		if (c == '0') return TileType.Empty;
-		else if (c == '1') return TileType.Ground;
-		else if (c == 'g') return TileType.Gun;
-		else return TileType.NONE;
 	}
 
 	// Use this for initialization

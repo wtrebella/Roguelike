@@ -2,23 +2,23 @@
 using System.Collections;
 
 public class Tile {
-	public TileType type;
+	public TileData tileData;
 	public Room room;
 	public int indexInRoomX;
 	public int indexInRoomY;
 	
-	public Tile(Room room, TileType type, int indexInRoomX, int indexInRoomY) {
+	public Tile(Room room, TileData tileData, int indexInRoomX, int indexInRoomY) {
 		this.room = room;
-		this.type = type;
+		this.tileData = tileData;
 		this.indexInRoomX = indexInRoomX;
 		this.indexInRoomY = indexInRoomY;
 	}
 
-	public Tile(Room room, int indexInRoomX, int indexInRoomY) : this(room, TileType.NONE, indexInRoomX, indexInRoomY) {
+	public Tile(Room room, int indexInRoomX, int indexInRoomY) : this(room, null, indexInRoomX, indexInRoomY) {
 
 	}
 
-	public Tile() : this(null, TileType.NONE, -1, -1) {
+	public Tile() : this(null, null, -1, -1) {
 
 	}
 }

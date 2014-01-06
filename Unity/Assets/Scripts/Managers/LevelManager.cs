@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour {
 	public int levelNum = 0;
-	public GameObject playerPrefab;
 	public GameObject gunPrefab;
 
 	protected Map map;
@@ -17,13 +16,12 @@ public class LevelManager : MonoBehaviour {
 		tileManager = GameObject.Find("Tile Manager").GetComponent<TileManager>();
 		tileMap = GameObject.Find("Tile Map");
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
+		player = GameObject.Find("Player").GetComponent<Player>();
 	}
 
 	void Start() {
 		GenerateMapData();
 		GenerateLevel();
-
-		player = ((GameObject)Instantiate(playerPrefab)).GetComponent<Player>();
 
 		Room topLeftRoom = map.GetRoom(0, map.mapHeight - 1);
 
@@ -31,7 +29,7 @@ public class LevelManager : MonoBehaviour {
 		for (int y = 0; y < Room.roomHeight; y++) {
 			for (int x = 0; x < Room.roomWidth; x++) {
 				Tile tile = topLeftRoom.GetTile(x, y);
-				if (tile.type == TileType.Empty) emptyTiles.Add(tile);
+				if (tile.tileData.tileType == TileType.Empty) emptyTiles.Add(tile);
 			}
 			if (emptyTiles.Count > 0) break;
 		}
@@ -59,16 +57,17 @@ public class LevelManager : MonoBehaviour {
 						Tile tile = room.GetTile(tileX, tileY);
 						Vector3 tileOrigin = GetTileOrigin(tile);
 
-						if (tile.type == TileType.Ground) {
+						if (tile.tileData.tileType == TileType.Ground) {
 							Transform newTile = tileManager.GetNewTile(TileTheme.Grass, GroundTileType.Singular);
 							newTile.name = string.Format("Room: (" + x + ", " + y + ") - Tile: (" + tileX + ", " + tileY + ")");
 							newTile.position = tileOrigin;
 							newTile.parent = tileMap.transform;
 						}
-						else if (tile.type == TileType.Gun) {
+						else if (tile.tileData.tileType == TileType.Gun) {
 							Gun newGun = ((GameObject)Instantiate(gunPrefab)).GetComponent<Gun>();
+							newGun.SetupAsGunType((GunType)Random.Range(0, 4));
 							newGun.transform.parent = tileMap.transform;
-							newGun.name = "Gun";
+							newGun.name = newGun.gunType.ToString();
 							newGun.transform.position = tileOrigin;
 						}
 					}

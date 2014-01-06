@@ -42,7 +42,7 @@ public class Room {
 			for (int y = 0; y < roomHeight; y++) {
 				Tile tile = new Tile(this, x, y);
 
-				tile.type = Manager.CharToTileType(template[x, y]);
+				tile.tileData = TileData.CharToTileData(template[x, y]);
 
 				AddTile(tile);
 			}

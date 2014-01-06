@@ -31,10 +31,15 @@ public enum GroundTileType {
 	NONE
 }
 
+public enum BulletType {
+	Pistol,
+	NONE
+}
+
 public enum TileType {
 	Empty,
-	Gun,
 	Ground,
+	Gun,
 	NONE
 }
 
@@ -42,5 +47,13 @@ public enum RoomType {
 	RoomType1,
 	RoomType2,
 	RoomType3,
+	NONE
+}
+
+public enum GunType {
+	Pistol,
+	PistolRed,
+	PistolGreen,
+	PistolBlue,
 	NONE
 }

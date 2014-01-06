@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 	[HideInInspector] public Direction facingDirection = Direction.Right;
 	
 	protected Manager manager;
+	protected GunHolder gunHolder;
 	protected bool lastActionWasJump = false; // eventually you might add other positive y velocity things like springs, which will turn this false
 	protected int originalPlatformMask;
 	protected Transform currentGroundTile;
@@ -37,6 +38,8 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
 		playerSpriteObject = GameObject.Find("Player Sprite").transform;
+		manager = GameObject.Find("Manager").GetComponent<Manager>();
+		gunHolder = GameObject.Find("Gun Holder").GetComponent<GunHolder>();
 		Camera.main.GetComponent<CameraFollow>().objectToFollow = this.gameObject;
 
 //		animationStateWalk = Animator.StringToHash("PlayerWalk");
@@ -45,8 +48,6 @@ public class Player : MonoBehaviour {
 //		animationStateClimb = Animator.StringToHash("PlayerClimb");
 //
 //		animator = playerSpriteObject.GetComponent<Animator>();
-
-		manager = GameObject.Find("Manager").GetComponent<Manager>();
 	}
 
 	void Start() {
@@ -54,6 +55,14 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
+		gunHolder.facingDirection = facingDirection;
+
+		if (Input.GetKeyDown(KeyCode.F)) {
+			if (gunHolder.currentGun != null) {
+				gunHolder.currentGun.Shoot();
+			}
+		}
+
 		Vector3 velocity = controller.velocity;
 		
 		ApplyDrag(ref velocity);
