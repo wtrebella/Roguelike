@@ -14,8 +14,8 @@ TestResults
 *.sln.docstates
 
 # Build results
-Temp/
-Library/
+Unity/Temp/
+Unity/Library/
 [Dd]ebug/
 [Rr]elease/
 x64/
