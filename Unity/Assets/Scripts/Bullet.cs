@@ -61,10 +61,9 @@ public class Bullet : MonoBehaviour {
 	public void Shoot() {
 		if (!hasBeenSetup) throw new UnityException("gun hasn't been set up!");
 
-		transform.position = gun.bulletExitTransform.position;
 		particleTrail.Play();
 		direction = gun.currentGunHolder.facingDirection;
-		transform.position = gun.transform.position;
+		transform.position = gun.bulletExitTransform.position;
 		velocity = gun.shootVelocity;
 
 		int dirMultiplier = direction == Direction.Right?1:-1;

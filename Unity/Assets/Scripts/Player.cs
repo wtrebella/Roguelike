@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
 	protected CharacterController2D controller;
 	protected bool isClimbing = false;
 	protected Vector3 outsideForce = Vector3.zero;
+	protected Animator animator;
 //	protected Animator animator;
 //	protected int animationStateWalk;
 //	protected int animationStateStand;
@@ -39,7 +40,8 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
-		gunHolder = GameObject.Find("Gun Holder").GetComponent<GunHolder>();
+		gunHolder = GetComponentInChildren<GunHolder>();
+		animator = GetComponent<Animator>();
 
 //		animationStateWalk = Animator.StringToHash("PlayerWalk");
 //		animationStateStand = Animator.StringToHash("PlayerStand");
@@ -65,7 +67,7 @@ public class Player : MonoBehaviour {
 		Vector3 velocity = controller.velocity;
 		
 		ApplyDrag(ref velocity);
-		UpdateWalking(ref velocity);
+		UpdateRunning(ref velocity);
 		UpdateClimbing(ref velocity);
 		UpdateJumping(ref velocity);
 		ApplyGravity(ref velocity);
@@ -83,23 +85,23 @@ public class Player : MonoBehaviour {
 		if (velocity.y < 0) velocity.y = Mathf.Min(velocity.y + manager.drag.y, 0);
 	}
 
-	void UpdateWalking(ref Vector3 velocity) {
+	void UpdateRunning(ref Vector3 velocity) {
 		if (InputManager.ActiveDevice.Direction.x > 0 || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
+			animator.SetBool("isRunning", true);
+
 			velocity.x = Mathf.Min(velocity.x + runSpeed, runSpeed);
 
 			Face(Direction.Right);
-			
-			//if (controller.isGrounded) animator.Play(animationStateWalk);
 		}
 		else if (InputManager.ActiveDevice.Direction.x < 0 || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
+			animator.SetBool("isRunning", true);
+
 			velocity.x = Mathf.Max(velocity.x - runSpeed, -runSpeed);
 
 			Face(Direction.Left);
-			
-			//if (controller.isGrounded) animator.Play(animationStateWalk);
 		}
 		else if (controller.isGrounded) {
-			//animator.Play(animationStateStand);
+			animator.SetBool("isRunning", false);
 		}
 	}
 
