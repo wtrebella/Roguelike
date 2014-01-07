@@ -40,6 +40,7 @@ public class GunHolder : MonoBehaviour {
 		gun.transform.parent = transform;
 		gun.transform.localScale = new Vector3(1, 1, 1);
 		gun.transform.localPosition = localGunAttachPos;
+		gun.transform.localRotation = Quaternion.identity;
 	}
 	
 	public void DropGun() {

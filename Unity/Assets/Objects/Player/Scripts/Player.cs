@@ -30,6 +30,7 @@ public class Player : MonoBehaviour {
 	protected bool isClimbing = false;
 	protected Vector3 outsideForce = Vector3.zero;
 	protected Animator animator;
+	protected float timeOfBeginFall = 0;
 //	protected Animator animator;
 //	protected int animationStateWalk;
 //	protected int animationStateStand;
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour {
 		ApplyDrag(ref velocity);
 		UpdateRunning(ref velocity);
 		UpdateClimbing(ref velocity);
-		UpdateJumping(ref velocity);
+		UpdateJumpingAndFalling(ref velocity);
 		ApplyGravity(ref velocity);
 		ApplyOutsideForce(ref velocity);
 
@@ -94,22 +95,20 @@ public class Player : MonoBehaviour {
 
 	void UpdateRunning(ref Vector3 velocity) {
 		if (controlManager.GetRight(ControlState.IsPressed)) {
-			animator.SetBool("isRunning", true);
+			if (controller.isGrounded) animator.SetBool("isRunning", true);
 
 			velocity.x = Mathf.Min(velocity.x + runSpeed, runSpeed);
 
 			Face(Direction.Right);
 		}
 		else if (controlManager.GetLeft(ControlState.IsPressed)) {
-			animator.SetBool("isRunning", true);
+			if (controller.isGrounded) animator.SetBool("isRunning", true);
 
 			velocity.x = Mathf.Max(velocity.x - runSpeed, -runSpeed);
 
 			Face(Direction.Left);
 		}
-		else if (controller.isGrounded) {
-			animator.SetBool("isRunning", false);
-		}
+		else animator.SetBool("isRunning", false);
 	}
 
 	void UpdateClimbing(ref Vector3 velocity) {
@@ -161,11 +160,12 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void UpdateJumping(ref Vector3 velocity) {
+	void UpdateJumpingAndFalling(ref Vector3 velocity) {
 		if ((controller.isGrounded || isClimbing) && controlManager.GetJump(ControlState.WasPressed)) {
 			lastActionWasJump = true;
-			//animator.Play(animationStateJump);
 			isClimbing = false;
+
+			animator.SetTrigger("Jump");
 			
 			if ((controlManager.GetDown(ControlState.IsPressed) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
 				velocity.y = 0;
@@ -182,6 +182,13 @@ public class Player : MonoBehaviour {
 				velocity.y *= 0.35f;
 			}
 		}
+
+		if (controller.isGrounded) animator.SetBool("isGrounded", true);
+		else animator.SetBool("isGrounded", false);
+
+		if (previouslyWasGrounded && !controller.isGrounded) timeOfBeginFall = Time.time;
+
+		animator.SetFloat("timeFalling", Time.time - timeOfBeginFall);
 	}
 
 	void ApplyGravity(ref Vector3 velocity) {
@@ -219,8 +226,14 @@ public class Player : MonoBehaviour {
 			isClimbing = false;
 			lastActionWasJump = false;
 			currentGroundTile = raycastHit.collider.transform;
+			timeOfBeginFall = Time.time;
+
+			animator.SetBool("isGrounded", true);
 		}
-		else currentGroundTile = null;
+		else {
+			currentGroundTile = null;
+			animator.SetBool("isGrounded", false);
+		}
 	}
 
 }
