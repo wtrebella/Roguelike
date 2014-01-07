@@ -4,6 +4,9 @@ using System.Collections;
 public class Gun : MonoBehaviour {
 	public GunType gunType;
 	public GameObject bulletPrefab;
+	public GameObject shellPrefab;
+	public float shellVelocityMultiplier = 10;
+	public float shellAngularVelocityMultiplier = 10;
 	public Vector3 shootVelocity;
 	public float baseSpreadAngle = 0;
 	public float screenShakeIntensity = 0;
@@ -13,6 +16,7 @@ public class Gun : MonoBehaviour {
 	public Vector3 recoilForce;
 	public AudioClip shootSound;
 	public Transform bulletExitTransform;
+	public Transform shellExitTransform;
 
 	[HideInInspector] public float timeOfLastShot = 0;
 	[HideInInspector] public GunHolder currentGunHolder = null;
@@ -41,6 +45,11 @@ public class Gun : MonoBehaviour {
 		Bullet bullet = ((GameObject)Instantiate(bulletPrefab)).GetComponent<Bullet>();
 		bullet.SetGun(this);
 		bullet.Shoot();
+
+		Shell shell = ((GameObject)Instantiate(shellPrefab)).GetComponent<Shell>();
+		shell.SetGun(this);
+		shell.ShootOut();
+
 		Vector3 actualRecoil = recoilForce;
 		actualRecoil.x *= currentGunHolder.facingDirection == Direction.Left?1:-1;
 		currentGunHolder.gunOwner.AddOutsideForce(actualRecoil);

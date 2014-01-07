@@ -46,7 +46,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void GenerateMapData() {
-		map = new Map(10, 4);
+		map = new Map(10, 2);
 	}
 
 	void GenerateLevel() {

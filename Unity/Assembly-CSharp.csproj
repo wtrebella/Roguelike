@@ -96,6 +96,7 @@
      <Compile Include="Assets\Scripts\NonMovingRigidbody.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\RoomTemplates.cs" />
+     <Compile Include="Assets\Scripts\Shell.cs" />
      <Compile Include="Assets\Scripts\TileData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

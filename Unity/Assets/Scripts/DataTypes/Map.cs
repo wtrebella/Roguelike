@@ -32,7 +32,7 @@ public class Map {
 	void GenerateRooms() {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
-				RoomType roomType = (RoomType)Random.Range(0, 3);
+				RoomType roomType = RoomType.RoomType1;
 				Room newRoom = new Room(this, roomType, x, y);
 				rooms.Add(newRoom);
 				roomHashes.Add(GetRoomHash(x, y));

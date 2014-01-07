@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour {
 	public BulletType bulletType;
 	public GameObject bulletExplosionPrefab;
 
+	protected GameObject bulletExplosion;
 	protected bool isDead = false;
 	protected Direction direction;
 	protected Vector3 velocity;
@@ -40,7 +41,7 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void Kill() {
-		Instantiate(bulletExplosionPrefab, transform.position, Quaternion.identity);
+		bulletExplosion = (GameObject)Instantiate(bulletExplosionPrefab, transform.position, Quaternion.identity);
 
 		isDead = true;
 
@@ -53,6 +54,7 @@ public class Bullet : MonoBehaviour {
 	IEnumerator WaitThenDestroy() {
 		yield return new WaitForSeconds(2.0f);
 
+		GameObject.Destroy(bulletExplosion);
 		GameObject.Destroy(this.gameObject);
 	}
 
