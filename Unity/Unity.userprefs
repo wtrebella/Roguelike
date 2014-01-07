@@ -1,20 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/RoomTemplates.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Objects/Player/Scripts/Player.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player.cs" Line="95" Column="51" />
-      <File FileName="Assets/Scripts/Managers/LevelManager.cs" Line="65" Column="38" />
-      <File FileName="Assets/Scripts/Managers/TileManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/RoomTemplates.cs" Line="43" Column="3" />
-      <File FileName="Assets/Scripts/Gun.cs" Line="16" Column="4" />
-      <File FileName="Assets/Scripts/Bullet.cs" Line="44" Column="33" />
-      <File FileName="Assets/Scripts/GunHolder.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GroundTile.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Shell.cs" Line="24" Column="56" />
-      <File FileName="Assets/Scripts/DataTypes/Room.cs" Line="24" Column="25" />
-      <File FileName="Assets/Scripts/DataTypes/Map.cs" Line="35" Column="44" />
-      <File FileName="Assets/Scripts/TileData.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/CameraFollow.cs" Line="6" Column="2" />
+      <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/LevelManager.cs" Line="18" Column="63" />
+      <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/TileManager.cs" Line="29" Column="50" />
+      <File FileName="Assets/Objects/Guns/Scripts/Bullet.cs" Line="93" Column="4" />
+      <File FileName="Assets/Miscellaneous/Scripts/Manager.cs" Line="12" Column="43" />
+      <File FileName="Assets/Objects/Player/Scripts/Player.cs" Line="89" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
