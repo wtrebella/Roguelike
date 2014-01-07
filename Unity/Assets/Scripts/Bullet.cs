@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour {
 	public float rotationSpeed = 0;
 	public BulletType bulletType;
 
+	protected bool isDead = false;
 	protected Direction direction;
 	protected Vector3 velocity;
 	protected Gun gun;
@@ -24,22 +25,31 @@ public class Bullet : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (!hasBeenSetup || !hasShot) return;
+		if (!hasBeenSetup || !hasShot || isDead) return;
 
 		velocity.y += manager.gravity * gravityMultiplier * Time.deltaTime;
 
 		transform.position += velocity * Time.deltaTime;
 		transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.deltaTime));
 
-		Vector3 curRotation = transform.rotation.eulerAngles;
-
 		float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
 		particles.transform.rotation = Quaternion.Euler(velocityAngle, 270, 0);
 
-		if ((transform.position - gun.transform.position).magnitude > 50) Destroy();
+		if ((transform.position - gun.transform.position).magnitude > 50) Kill();
 	}
 
-	void Destroy() {
+	void Kill() {
+		isDead = true;
+
+		GetComponentInChildren<SpriteRenderer>().enabled = false;
+		particles.Stop();
+
+		StartCoroutine(WaitThenDestroy());
+	}
+
+	IEnumerator WaitThenDestroy() {
+		yield return new WaitForSeconds(2.0f);
+
 		GameObject.Destroy(this.gameObject);
 	}
 
@@ -72,9 +82,11 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {
+		if (isDead) return;
+
 		if (coll.gameObject.layer == LayerMask.NameToLayer("Ground")) {
 			coll.GetComponent<GroundTile>().Destroy();
-			Destroy();
+			Kill();
 		}
 	}
 }
