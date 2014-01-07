@@ -58,7 +58,7 @@ public class Bullet : MonoBehaviour {
 
 		float spreadAngle = gun.baseSpreadAngle;
 		float recoilSpreadMultiplier = Mathf.Max(0, (1 - (Time.time - gun.timeOfLastShot) / gun.recoilTime)) * gun.recoilSpreadMultiplier + 1;
-
+		if (recoilSpreadMultiplier > 0 && spreadAngle == 0) spreadAngle = 1;
 		spreadAngle *= recoilSpreadMultiplier;
 
 		velocity = Quaternion.Euler(0, 0, Random.Range(-spreadAngle / 2f, spreadAngle / 2f)) * velocity;
