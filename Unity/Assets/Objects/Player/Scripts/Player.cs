@@ -178,7 +178,7 @@ public class Player : MonoBehaviour {
 
 		// cut jump short if you release space early
 		if (lastActionWasJump) {
-			if (controlManager.GetJump(ControlState.WasReleased) && controlManager.GetUp(ControlState.IsPressed)) {
+			if (controlManager.GetJump(ControlState.WasReleased)) {
 				velocity.y *= 0.35f;
 			}
 		}
