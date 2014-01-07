@@ -46,9 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Managers\Scripts\ControlManager.cs" />
+     <Compile Include="Assets\Managers\Scripts\LevelManager.cs" />
+     <Compile Include="Assets\Managers\Scripts\Manager.cs" />
+     <Compile Include="Assets\Managers\Scripts\SpriteManager.cs" />
+     <Compile Include="Assets\Managers\Scripts\TileManager.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\CharacterController2D.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\Enums.cs" />
-     <Compile Include="Assets\Miscellaneous\Scripts\Manager.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\NonMovingRigidbody.cs" />
      <Compile Include="Assets\Objects\Camera\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Objects\Camera\Scripts\CameraShake.cs" />
@@ -58,14 +62,11 @@
      <Compile Include="Assets\Objects\Guns\Scripts\Shell.cs" />
      <Compile Include="Assets\Objects\Player\Scripts\Player.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\GroundTile.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\Map.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\Room.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\RoomTemplates.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\SpriteManager.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\Tile.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\TileData.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\TileManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

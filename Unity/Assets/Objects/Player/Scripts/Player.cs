@@ -17,7 +17,8 @@ public class Player : MonoBehaviour {
 
 	[HideInInspector] public Transform currentClimbable;
 	[HideInInspector] public Direction facingDirection = Direction.Right;
-	
+
+	protected ControlManager controlManager;
 	protected Manager manager;
 	protected GunHolder gunHolder;
 	protected bool lastActionWasJump = false; // eventually you might add other positive y velocity things like springs, which will turn this false
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour {
 	protected bool previouslyWasGrounded = true;
 
 	void Awake() {
+		controlManager = GameObject.Find("Control Manager").GetComponent<ControlManager>();
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
@@ -56,13 +58,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
-		gunHolder.facingDirection = facingDirection;
-
-		if (InputManager.ActiveDevice.RightTrigger.WasPressed || InputManager.ActiveDevice.Action3.WasPressed || Input.GetKeyDown(KeyCode.F)) {
-			if (gunHolder.currentGun != null) {
-				gunHolder.currentGun.Shoot();
-			}
-		}
+		UpdateGun();
 
 		Vector3 velocity = controller.velocity;
 		
@@ -78,6 +74,17 @@ public class Player : MonoBehaviour {
 		previouslyWasGrounded = controller.isGrounded;
 	}
 
+	void UpdateGun() {
+		gunHolder.facingDirection = facingDirection;
+		Gun gun = gunHolder.currentGun;
+		if (gun == null) return;
+
+		bool shouldShoot = gun.isAutomaticFire && controlManager.GetShoot(ControlState.IsPressed) && gun.CanShoot();
+		shouldShoot = shouldShoot || (!gun.isAutomaticFire && controlManager.GetShoot(ControlState.WasPressed));
+
+		if (shouldShoot) gun.Shoot();
+	}
+
 	void ApplyDrag(ref Vector3 velocity) {
 		if (velocity.x > 0) velocity.x = Mathf.Max(velocity.x - manager.drag.x, 0);
 		if (velocity.x < 0) velocity.x = Mathf.Min(velocity.x + manager.drag.x, 0);
@@ -86,14 +93,14 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateRunning(ref Vector3 velocity) {
-		if (InputManager.ActiveDevice.Direction.x > manager.joystickDeadzoneSize || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
+		if (controlManager.GetRight(ControlState.IsPressed)) {
 			animator.SetBool("isRunning", true);
 
 			velocity.x = Mathf.Min(velocity.x + runSpeed, runSpeed);
 
 			Face(Direction.Right);
 		}
-		else if (InputManager.ActiveDevice.Direction.x < -manager.joystickDeadzoneSize || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
+		else if (controlManager.GetLeft(ControlState.IsPressed)) {
 			animator.SetBool("isRunning", true);
 
 			velocity.x = Mathf.Max(velocity.x - runSpeed, -runSpeed);
@@ -113,7 +120,7 @@ public class Player : MonoBehaviour {
 		}
 
 		if (currentClimbable != null) {
-			if (Input.GetKey(KeyCode.UpArrow)) {
+			if (controlManager.GetUp(ControlState.IsPressed)) {
 				if (!isClimbing) {
 					climbStartPos = transform.position;
 					climbStartTime = Time.time;
@@ -132,10 +139,10 @@ public class Player : MonoBehaviour {
 				
 				controller.move(Vector3.Lerp(climbStartPos, goalPosCenter, (Time.time - climbStartTime) / centeringSpeed) - transform.position);
 				
-				if (Input.GetKey(KeyCode.UpArrow)) {
+				if (controlManager.GetUp(ControlState.IsPressed)) {
 					velocity.y += climbSpeed;
 				}
-				if (Input.GetKey(KeyCode.DownArrow)) {
+				if (controlManager.GetDown(ControlState.IsPressed)) {
 					velocity.y -= climbSpeed;
 				}
 				
@@ -155,12 +162,12 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateJumping(ref Vector3 velocity) {
-		if ((controller.isGrounded || isClimbing) && (Input.GetKeyDown(KeyCode.Space) || InputManager.ActiveDevice.Action1.WasPressed)) {
+		if ((controller.isGrounded || isClimbing) && controlManager.GetJump(ControlState.WasPressed)) {
 			lastActionWasJump = true;
 			//animator.Play(animationStateJump);
 			isClimbing = false;
 			
-			if ((InputManager.ActiveDevice.Direction.y < -manager.joystickDeadzoneSize || Input.GetKey(KeyCode.DownArrow) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
+			if ((controlManager.GetDown(ControlState.IsPressed) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
 				velocity.y = 0;
 				StartCoroutine(TemporarilyTurnOffGroundCollisions(0.05f));
 			}
@@ -171,7 +178,7 @@ public class Player : MonoBehaviour {
 
 		// cut jump short if you release space early
 		if (lastActionWasJump) {
-			if (InputManager.ActiveDevice.Action1.WasReleased || Input.GetKeyUp(KeyCode.Space) && controller.velocity.y > 0) {
+			if (controlManager.GetJump(ControlState.WasReleased) && controlManager.GetUp(ControlState.IsPressed)) {
 				velocity.y *= 0.35f;
 			}
 		}

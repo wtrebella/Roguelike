@@ -13,11 +13,12 @@ public class Gun : MonoBehaviour {
 	public float screenShakeDecayTime = 0;
 	public float recoilTime = 0;
 	public float recoilSpreadMultiplier = 1;
-	//public float automaticFireTime = -1;
+	public float automaticFireTime = -1;
 	public Vector3 recoilForce;
 	public AudioClip shootSound;
 	public Transform bulletExitTransform;
 	public Transform shellExitTransform;
+	public bool isAutomaticFire = false;
 
 	[HideInInspector] public float timeOfLastShot = 0;
 	[HideInInspector] public GunHolder currentGunHolder = null;
@@ -42,6 +43,10 @@ public class Gun : MonoBehaviour {
 	
 	}
 
+	public bool CanShoot() {
+		return !isAutomaticFire || automaticFireTime == -1 || (isAutomaticFire && automaticFireTime >= 0 && (Time.time - timeOfLastShot >= automaticFireTime));
+	}
+
 	public void Shoot() {
 		Bullet bullet = ((GameObject)Instantiate(bulletPrefab)).GetComponent<Bullet>();
 		bullet.SetGun(this);
@@ -54,9 +59,13 @@ public class Gun : MonoBehaviour {
 		Vector3 actualRecoil = recoilForce;
 		actualRecoil.x *= currentGunHolder.facingDirection == Direction.Left?1:-1;
 		currentGunHolder.gunOwner.AddOutsideForce(actualRecoil);
-		AudioSource.PlayClipAtPoint(shootSound, Vector3.zero);
+
 		Camera.main.GetComponent<CameraShake>().Shake(screenShakeIntensity, screenShakeDecayTime);
+
 		if (animator != null) animator.SetTrigger("Shoot");
+
+		AudioSource.PlayClipAtPoint(shootSound, Vector3.zero);
+
 		timeOfLastShot = Time.time;
 	}
 

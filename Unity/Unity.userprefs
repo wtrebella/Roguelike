@@ -1,12 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Objects/Player/Scripts/Player.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Objects/Guns/Scripts/Bullet.cs">
     <Files>
       <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/LevelManager.cs" Line="18" Column="63" />
-      <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/TileManager.cs" Line="29" Column="50" />
-      <File FileName="Assets/Objects/Guns/Scripts/Bullet.cs" Line="93" Column="4" />
-      <File FileName="Assets/Miscellaneous/Scripts/Manager.cs" Line="12" Column="43" />
+      <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/TileManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Objects/Guns/Scripts/Bullet.cs" Line="28" Column="3" />
+      <File FileName="Assets/Miscellaneous/Scripts/Manager.cs" Line="1" Column="1" />
       <File FileName="Assets/Objects/Player/Scripts/Player.cs" Line="89" Column="16" />
+      <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/RoomTemplates.cs" Line="14" Column="22" />
+      <File FileName="Assets/Objects/Tiles and Level Gen/Scripts/GroundTile.cs" Line="19" Column="61" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

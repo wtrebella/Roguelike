@@ -9,6 +9,13 @@ public enum TileTheme {
 	NONE
 }
 
+public enum ControlState {
+	WasPressed,
+	IsPressed,
+	WasReleased,
+	NONE
+}
+
 public enum GroundTileType {
 	Singular,
 	Center,

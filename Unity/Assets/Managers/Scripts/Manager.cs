@@ -9,7 +9,6 @@ public class Manager : MonoBehaviour {
 		set {Time.timeScale = value;}
 	}
 
-	public float joystickDeadzoneSize = 0.3f;
 	public Vector3 drag = Vector3.zero;
 	public float gravity = -50;
 	public float tileSize = 0.7f;
