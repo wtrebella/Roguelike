@@ -61,6 +61,9 @@ public class LevelManager : MonoBehaviour {
 
 						if (tile.tileData.tileType == TileType.Ground) {
 							Transform newTile = tileManager.GetNewTile(TileTheme.Grass, GroundTileType.Singular);
+							float rVal = Random.value;
+							float cVal = 1.0f - rVal * 0.3f;
+							newTile.GetComponent<SpriteRenderer>().color = new Color(cVal, cVal, cVal);
 							newTile.name = string.Format("Room: (" + x + ", " + y + ") - Tile: (" + tileX + ", " + tileY + ")");
 							newTile.position = tileOrigin;
 							newTile.parent = tileMap.transform;

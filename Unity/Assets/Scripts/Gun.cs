@@ -13,6 +13,7 @@ public class Gun : MonoBehaviour {
 	public float screenShakeDecayTime = 0;
 	public float recoilTime = 0;
 	public float recoilSpreadMultiplier = 1;
+	//public float automaticFireTime = -1;
 	public Vector3 recoilForce;
 	public AudioClip shootSound;
 	public Transform bulletExitTransform;
