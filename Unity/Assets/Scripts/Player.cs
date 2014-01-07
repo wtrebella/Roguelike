@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
 	protected float climbStartTime = 0;
 	protected CharacterController2D controller;
 	protected bool isClimbing = false;
+	protected Vector3 outsideForce = Vector3.zero;
 //	protected Animator animator;
 //	protected int animationStateWalk;
 //	protected int animationStateStand;
@@ -68,7 +69,8 @@ public class Player : MonoBehaviour {
 		UpdateClimbing(ref velocity);
 		UpdateJumping(ref velocity);
 		ApplyGravity(ref velocity);
-		
+		ApplyOutsideForce(ref velocity);
+
 		controller.move(velocity * Time.deltaTime);
 		
 		previouslyWasGrounded = controller.isGrounded;
@@ -83,14 +85,14 @@ public class Player : MonoBehaviour {
 
 	void UpdateWalking(ref Vector3 velocity) {
 		if (InputManager.ActiveDevice.Direction.x > 0 || Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) {
-			velocity.x = runSpeed;
+			velocity.x = Mathf.Min(velocity.x + runSpeed, runSpeed);
 
 			Face(Direction.Right);
 			
 			//if (controller.isGrounded) animator.Play(animationStateWalk);
 		}
 		else if (InputManager.ActiveDevice.Direction.x < 0 || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) {
-			velocity.x = -runSpeed;
+			velocity.x = Mathf.Max(velocity.x - runSpeed, -runSpeed);
 
 			Face(Direction.Left);
 			
@@ -175,6 +177,16 @@ public class Player : MonoBehaviour {
 
 	void ApplyGravity(ref Vector3 velocity) {
 		velocity.y += manager.gravity * Time.deltaTime;
+	}
+
+	public void AddOutsideForce(Vector3 force) {
+		outsideForce += force;
+	}
+
+	void ApplyOutsideForce(ref Vector3 velocity) {
+		if (outsideForce.y > 0 && !controller.isGrounded) outsideForce.y = 0;
+		velocity += outsideForce;
+		outsideForce = Vector3.zero;
 	}
 
 	IEnumerator TemporarilyTurnOffGroundCollisions(float time) {

@@ -5,12 +5,16 @@ public class Gun : MonoBehaviour {
 	public GunType gunType;
 	public GameObject bulletPrefab;
 	public Vector3 shootVelocity;
-	public Vector3 bulletExitPoint;
-	public float angleOfSpread = 0;
+	public float baseSpreadAngle = 0;
 	public float screenShakeIntensity = 0;
 	public float screenShakeDecayTime = 0;
+	public float recoilTime = 0;
+	public float recoilSpreadMultiplier = 1;
+	public Vector3 recoilForce;
 	public AudioClip shootSound;
+	public Transform bulletExitTransform;
 
+	[HideInInspector] public float timeOfLastShot = 0;
 	[HideInInspector] public GunHolder currentGunHolder = null;
 	[HideInInspector] public SpriteRenderer spriteRenderer;
 
@@ -37,9 +41,13 @@ public class Gun : MonoBehaviour {
 		Bullet bullet = ((GameObject)Instantiate(bulletPrefab)).GetComponent<Bullet>();
 		bullet.SetGun(this);
 		bullet.Shoot();
+		Vector3 actualRecoil = recoilForce;
+		actualRecoil.x *= currentGunHolder.facingDirection == Direction.Left?1:-1;
+		currentGunHolder.gunOwner.AddOutsideForce(actualRecoil);
 		AudioSource.PlayClipAtPoint(shootSound, Vector3.zero);
 		Camera.main.GetComponent<CameraShake>().Shake(screenShakeIntensity, screenShakeDecayTime);
 		if (animator != null) animator.SetTrigger("Shoot");
+		timeOfLastShot = Time.time;
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {

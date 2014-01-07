@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 	public float gravityMultiplier = 1;
+	public float rotationSpeed = 0;
 	public BulletType bulletType;
 
 	protected Direction direction;
@@ -11,13 +12,15 @@ public class Bullet : MonoBehaviour {
 	protected Manager manager;
 	protected bool hasBeenSetup = false;
 	protected bool hasShot = false;
+	protected ParticleSystem particles;
 
 	void Awake() {
+		particles = GetComponentInChildren<ParticleSystem>();
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 	}
 
 	void Start () {
-
+		transform.rotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(0, 360)));
 	}
 	
 	void Update () {
@@ -26,6 +29,12 @@ public class Bullet : MonoBehaviour {
 		velocity.y += manager.gravity * gravityMultiplier * Time.deltaTime;
 
 		transform.position += velocity * Time.deltaTime;
+		transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.deltaTime));
+
+		Vector3 curRotation = transform.rotation.eulerAngles;
+
+		float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+		particles.transform.rotation = Quaternion.Euler(velocityAngle, 270, 0);
 
 		if ((transform.position - gun.transform.position).magnitude > 50) Destroy();
 	}
@@ -37,25 +46,27 @@ public class Bullet : MonoBehaviour {
 	public void Shoot() {
 		if (!hasBeenSetup) throw new UnityException("gun hasn't been set up!");
 
-		hasShot = true;
-	}
-
-	public void SetGun(Gun gun) {
-		this.gun = gun;
-
+		transform.position = gun.bulletExitTransform.position;
+		particles.Play();
 		direction = gun.currentGunHolder.facingDirection;
 		transform.position = gun.transform.position;
 		velocity = gun.shootVelocity;
 
 		int dirMultiplier = direction == Direction.Right?1:-1;
-		Vector3 exitPointDelta = gun.bulletExitPoint;
-
-		exitPointDelta.x *= dirMultiplier;
+		
 		velocity.x *= dirMultiplier;
 
-		velocity = Quaternion.Euler(0, 0, Random.Range(-gun.angleOfSpread / 2f, gun.angleOfSpread / 2f)) * velocity;
+		float spreadAngle = gun.baseSpreadAngle;
+		float recoilSpreadMultiplier = Mathf.Max(0, (1 - (Time.time - gun.timeOfLastShot) / gun.recoilTime)) * gun.recoilSpreadMultiplier + 1;
 
-		transform.position += exitPointDelta;
+		spreadAngle *= recoilSpreadMultiplier;
+
+		velocity = Quaternion.Euler(0, 0, Random.Range(-spreadAngle / 2f, spreadAngle / 2f)) * velocity;
+		hasShot = true;
+	}
+
+	public void SetGun(Gun gun) {
+		this.gun = gun;
 
 		hasBeenSetup = true;
 	}

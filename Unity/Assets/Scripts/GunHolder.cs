@@ -6,13 +6,14 @@ public class GunHolder : MonoBehaviour {
 	public float delayAfterGunPickup = 1;
 	public AudioClip pickupSound;
 
+	[HideInInspector] public Player gunOwner;
 	[HideInInspector] public Direction facingDirection = Direction.Right;
 	[HideInInspector] public Gun currentGun = null;
 
 	protected float timeOfLastGunPickup = 0;
 
 	void Awake() {
-
+		gunOwner = transform.parent.GetComponent<Player>();
 	}
 
 	void Start() {
@@ -43,7 +44,7 @@ public class GunHolder : MonoBehaviour {
 	
 	public void DropGun() {
 		if (currentGun == null) return;
-		
+
 		currentGun.transform.parent = null;
 		currentGun = null;
 	}
