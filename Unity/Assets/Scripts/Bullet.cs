@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour {
 	public float gravityMultiplier = 1;
 	public float rotationSpeed = 0;
 	public BulletType bulletType;
+	public GameObject bulletExplosionPrefab;
 
 	protected bool isDead = false;
 	protected Direction direction;
@@ -13,10 +14,10 @@ public class Bullet : MonoBehaviour {
 	protected Manager manager;
 	protected bool hasBeenSetup = false;
 	protected bool hasShot = false;
-	protected ParticleSystem particles;
+	protected ParticleSystem particleTrail;
 
 	void Awake() {
-		particles = GetComponentInChildren<ParticleSystem>();
+		particleTrail = GetComponentInChildren<ParticleSystem>();
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 	}
 
@@ -33,16 +34,18 @@ public class Bullet : MonoBehaviour {
 		transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.deltaTime));
 
 		float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-		particles.transform.rotation = Quaternion.Euler(velocityAngle, 270, 0);
+		particleTrail.transform.rotation = Quaternion.Euler(velocityAngle, 270, 0);
 
 		if ((transform.position - gun.transform.position).magnitude > 50) Kill();
 	}
 
 	void Kill() {
+		Instantiate(bulletExplosionPrefab, transform.position, Quaternion.identity);
+
 		isDead = true;
 
 		GetComponentInChildren<SpriteRenderer>().enabled = false;
-		particles.Stop();
+		particleTrail.Stop();
 
 		StartCoroutine(WaitThenDestroy());
 	}
@@ -57,7 +60,7 @@ public class Bullet : MonoBehaviour {
 		if (!hasBeenSetup) throw new UnityException("gun hasn't been set up!");
 
 		transform.position = gun.bulletExitTransform.position;
-		particles.Play();
+		particleTrail.Play();
 		direction = gun.currentGunHolder.facingDirection;
 		transform.position = gun.transform.position;
 		velocity = gun.shootVelocity;
