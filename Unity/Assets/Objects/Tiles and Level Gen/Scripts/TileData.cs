@@ -23,6 +23,10 @@ public class TileData {
 			td = new TileDataGun();
 			(td as TileDataGun).gunType = GunType.Pistol;
 		}
+		else if (c == 't') {
+			td = new TileDataEnemy();
+			(td as TileDataEnemy).enemyType = EnemyType.Turtle;
+		}
 		
 		return td;
 	}
@@ -33,5 +37,13 @@ public class TileDataGun : TileData {
 	
 	public TileDataGun() {
 		tileType = TileType.Gun;
+	}
+}
+
+public class TileDataEnemy : TileData {
+	public EnemyType enemyType = EnemyType.NONE;
+	
+	public TileDataEnemy() {
+		tileType = TileType.Enemy;
 	}
 }

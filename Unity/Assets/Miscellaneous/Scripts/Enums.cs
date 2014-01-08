@@ -16,6 +16,11 @@ public enum ControlState {
 	NONE
 }
 
+public enum EnemyType {
+	Turtle,
+	NONE
+}
+
 public enum GroundTileType {
 	Singular,
 	Center,
@@ -50,6 +55,7 @@ public enum TileType {
 	Empty,
 	Ground,
 	Gun,
+	Enemy,
 	NONE
 }
 

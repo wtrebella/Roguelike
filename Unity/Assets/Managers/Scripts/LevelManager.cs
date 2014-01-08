@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class LevelManager : MonoBehaviour {
 	public int levelNum = 0;
 	public GameObject pistolPrefab;
+	public GameObject turtlePrefab;
 
 	protected Map map;
 	protected TileManager tileManager;
@@ -78,6 +79,17 @@ public class LevelManager : MonoBehaviour {
 								newGun.transform.parent = tileHolder.transform;
 								newGun.name = newGun.gunType.ToString();
 								newGun.transform.position = tileOrigin;
+							}
+						}
+						else if (tile.tileData.tileType == TileType.Enemy) {
+							TileDataEnemy tde = (TileDataEnemy)tile.tileData;
+							if (tde.enemyType != EnemyType.NONE) {
+								Turtle newTurtle = null;
+								if (tde.enemyType == EnemyType.Turtle) newTurtle = ((GameObject)Instantiate(turtlePrefab)).GetComponent<Turtle>();
+								newTurtle.transform.rotation = Quaternion.identity;
+								newTurtle.transform.parent = tileHolder.transform;
+								newTurtle.name = "Turtle";
+								newTurtle.transform.position = tileOrigin;
 							}
 						}
 					}
