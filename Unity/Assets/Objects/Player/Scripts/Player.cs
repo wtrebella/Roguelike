@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 	[HideInInspector] public Transform currentClimbable;
 	[HideInInspector] public Direction facingDirection = Direction.Right;
 
+	protected bool shouldJumpNextFrame = false;
 	protected ControlManager controlManager;
 	protected Manager manager;
 	protected GunHolder gunHolder;
@@ -161,19 +162,24 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateJumpingAndFalling(ref Vector3 velocity) {
-		if ((controller.isGrounded || isClimbing) && controlManager.GetJump(ControlState.WasPressed)) {
+		bool shouldJump = shouldJumpNextFrame || ((controller.isGrounded || isClimbing) && controlManager.GetJump(ControlState.WasPressed));
+
+		if (shouldJump) {
 			lastActionWasJump = true;
 			isClimbing = false;
-
+			shouldJumpNextFrame = false;
+			
 			animator.SetTrigger("Jump");
 			
-			if ((controlManager.GetDown(ControlState.IsPressed) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
-				velocity.y = 0;
-				StartCoroutine(TemporarilyTurnOffGroundCollisions(0.05f));
-			}
-			else {
-				velocity.y = Mathf.Sqrt(2f * jumpHeight * -manager.gravity * (isClimbing?0.5f:1));
-			}
+			velocity.y = Mathf.Sqrt(2f * jumpHeight * -manager.gravity * (isClimbing?0.5f:1));
+
+//			if ((controlManager.GetDown(ControlState.IsPressed) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
+//				velocity.y = 0;
+//				StartCoroutine(TemporarilyTurnOffGroundCollisions(0.05f));
+//			}
+//			else {
+//				velocity.y = Mathf.Sqrt(2f * jumpHeight * -manager.gravity * (isClimbing?0.5f:1));
+//			}
 		}
 
 		// cut jump short if you release space early
@@ -233,6 +239,11 @@ public class Player : MonoBehaviour {
 		else {
 			currentGroundTile = null;
 			animator.SetBool("isGrounded", false);
+		}
+
+		if (controller.collisionState.below && raycastHit.collider.GetComponent<JumpableEnemy>() != null) {
+			shouldJumpNextFrame = true;
+			raycastHit.collider.GetComponent<Enemy>().Kill();
 		}
 	}
 
