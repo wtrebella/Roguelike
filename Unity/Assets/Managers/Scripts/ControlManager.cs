@@ -41,15 +41,18 @@ public class ControlManager : MonoBehaviour {
 
 	public bool GetRight(ControlState state) {
 		if (state == ControlState.WasPressed) {
-			bool joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.x > joystickDeadzoneSize;
+			bool joystickWasPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.x > joystickDeadzoneSize;
 			return joystickWasPressed || Input.GetKeyDown(KeyCode.RightArrow) || InputManager.ActiveDevice.DPadRight.WasPressed || Input.GetKeyDown(KeyCode.D);
 		}
 		else if (state == ControlState.IsPressed) {
-			bool joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.x > joystickDeadzoneSize;
+			bool joystickIsPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.x > joystickDeadzoneSize;
 			return joystickIsPressed || Input.GetKey(KeyCode.RightArrow) || InputManager.ActiveDevice.DPadRight.IsPressed || Input.GetKey(KeyCode.D);
 		}
 		else if (state == ControlState.WasReleased) {
-			bool joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
+			bool joystickWasReleased = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
 			return joystickWasReleased || Input.GetKeyUp(KeyCode.RightArrow) || InputManager.ActiveDevice.DPadRight.WasReleased || Input.GetKeyUp(KeyCode.D);
 		}
 
@@ -58,15 +61,18 @@ public class ControlManager : MonoBehaviour {
 
 	public bool GetLeft(ControlState state) {
 		if (state == ControlState.WasPressed) {
-			bool joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.x < -joystickDeadzoneSize;
+			bool joystickWasPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.x < -joystickDeadzoneSize;
 			return joystickWasPressed || Input.GetKeyDown(KeyCode.LeftArrow) || InputManager.ActiveDevice.DPadLeft.WasPressed || Input.GetKeyDown(KeyCode.A);
 		}
 		else if (state == ControlState.IsPressed) {
-			bool joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.x < -joystickDeadzoneSize;
+			bool joystickIsPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.x < -joystickDeadzoneSize;
 			return joystickIsPressed || Input.GetKey(KeyCode.LeftArrow) || InputManager.ActiveDevice.DPadLeft.IsPressed || Input.GetKey(KeyCode.A);
 		}
 		else if (state == ControlState.WasReleased) {
-			bool joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
+			bool joystickWasReleased = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
 			return joystickWasReleased || Input.GetKeyUp(KeyCode.LeftArrow) || InputManager.ActiveDevice.DPadLeft.WasReleased || Input.GetKeyUp(KeyCode.A);
 		}
 
@@ -75,15 +81,18 @@ public class ControlManager : MonoBehaviour {
 
 	public bool GetDown(ControlState state) {
 		if (state == ControlState.WasPressed) {
-			bool joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.y < -joystickDeadzoneSize;
+			bool joystickWasPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.y < -joystickDeadzoneSize;
 			return joystickWasPressed || Input.GetKeyDown(KeyCode.DownArrow) || InputManager.ActiveDevice.DPadDown.WasPressed || Input.GetKeyDown(KeyCode.S);
 		}
 		else if (state == ControlState.IsPressed) {
-			bool joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.x < -joystickDeadzoneSize;
+			bool joystickIsPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.x < -joystickDeadzoneSize;
 			return joystickIsPressed || Input.GetKey(KeyCode.DownArrow) || InputManager.ActiveDevice.DPadDown.IsPressed || Input.GetKey(KeyCode.S);
 		}
 		else if (state == ControlState.WasReleased) {
-			bool joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
+			bool joystickWasReleased = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
 			return joystickWasReleased || Input.GetKeyUp(KeyCode.DownArrow) || InputManager.ActiveDevice.DPadDown.WasReleased || Input.GetKeyUp(KeyCode.S);
 		}
 
@@ -92,15 +101,18 @@ public class ControlManager : MonoBehaviour {
 
 	public bool GetUp(ControlState state) {
 		if (state == ControlState.WasPressed) {
-			bool joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.y > joystickDeadzoneSize;
+			bool joystickWasPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasPressed = InputManager.ActiveDevice.Analogs[0].WasPressed && InputManager.ActiveDevice.Direction.y > joystickDeadzoneSize;
 			return joystickWasPressed || Input.GetKeyDown(KeyCode.UpArrow) || InputManager.ActiveDevice.DPadUp.WasPressed || Input.GetKeyDown(KeyCode.W);
 		}
 		else if (state == ControlState.IsPressed) {
-			bool joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.y > joystickDeadzoneSize;
+			bool joystickIsPressed = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickIsPressed = InputManager.ActiveDevice.Analogs[0].IsPressed && InputManager.ActiveDevice.Direction.y > joystickDeadzoneSize;
 			return joystickIsPressed || Input.GetKey(KeyCode.UpArrow) || InputManager.ActiveDevice.DPadUp.IsPressed || Input.GetKey(KeyCode.W);
 		}
 		else if (state == ControlState.WasReleased) {
-			bool joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
+			bool joystickWasReleased = false;
+			if (InputManager.ActiveDevice.Analogs.Length > 0) joystickWasReleased = InputManager.ActiveDevice.Analogs[0].WasReleased;
 			return joystickWasReleased || Input.GetKeyUp(KeyCode.UpArrow) || InputManager.ActiveDevice.DPadUp.WasReleased || Input.GetKeyUp(KeyCode.W);
 		}
 
