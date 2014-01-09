@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour {
 	void GenerateMapData() {
 		map = new Map(10, 2);
 	}
-
+	
 	void GenerateLevel() {
 		for (int x = 0; x < map.mapWidth; x++) {
 			for (int y = 0; y < map.mapHeight; y++) {

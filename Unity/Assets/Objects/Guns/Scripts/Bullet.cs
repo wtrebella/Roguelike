@@ -90,9 +90,14 @@ public class Bullet : MonoBehaviour {
 		if (isDead) return;
 
 		if (coll.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-			//coll.GetComponent<GroundTile>().Destroy();
 			Kill();
 			AudioSource.PlayClipAtPoint(woodHitSound, Vector3.zero);
+		}
+
+		Enemy enemy = coll.GetComponent<Enemy>();
+		if (enemy) {
+			enemy.HitWithBullet(this);
+			Kill();
 		}
 	}
 }

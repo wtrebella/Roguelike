@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Gun : MonoBehaviour {
@@ -58,7 +58,7 @@ public class Gun : MonoBehaviour {
 
 		Vector3 actualRecoil = recoilForce;
 		actualRecoil.x *= currentGunHolder.facingDirection == Direction.Left?1:-1;
-		currentGunHolder.gunOwner.AddOutsideForce(actualRecoil);
+		currentGunHolder.gunOwner.AddExternalForce(actualRecoil);
 
 		Camera.main.GetComponent<CameraShake>().Shake(screenShakeIntensity, screenShakeDecayTime);
 

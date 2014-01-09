@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class JumpableEnemy : MonoBehaviour {
+	public float bounceForce = 0;
 
 	// Use this for initialization
 	void Start () {

@@ -1,4 +1,6 @@
-﻿//#define DEBUG
+﻿//#define DRAW_COLLISION_RAYS
+#define DRAW_CUSTOM_RAYCAST_RAYS
+
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -32,11 +34,12 @@ public class CharacterController2D : MonoBehaviour
 		public bool above;
 		public bool below;
 		public bool becameGroundedThisFrame;
+		public bool becameUngroundedThisFrame;
 		
 		
 		public void reset()
 		{
-			right = left = above = below = becameGroundedThisFrame = false;
+			right = left = above = below = becameGroundedThisFrame = becameUngroundedThisFrame = false;
 		}
 		
 		
@@ -143,12 +146,17 @@ public class CharacterController2D : MonoBehaviour
 	#endregion
 	
 	
-	[System.Diagnostics.Conditional( "DEBUG" )]
+	[System.Diagnostics.Conditional( "DRAW_COLLISION_RAYS" )]
 	private void DrawRay( Vector3 start, Vector3 dir, Color color )
 	{
 		Debug.DrawRay( start, dir, color );
-	}
-	
+	}	
+
+	[System.Diagnostics.Conditional( "DRAW_CUSTOM_RAYCAST_RAYS" )]
+	private void DrawCustomRaycastRay( Vector3 start, Vector3 dir, Color color )
+	{
+		Debug.DrawRay( start, dir, color );
+	}	
 	
 	#region Movement
 	
@@ -179,8 +187,60 @@ public class CharacterController2D : MonoBehaviour
 		_raycastOrigins.bottomLeft.x += skinWidth;
 		_raycastOrigins.bottomLeft.y += skinWidth;
 	}
-	
-	
+
+	public RaycastHit2D[] Raycast(Direction direction, float rayDistance, int layerMask) {
+		primeRaycastOrigins(Vector3.zero, Vector3.zero);
+
+		Vector2 initialRayOrigin = Vector2.zero;
+		Vector2 rayDirection = Vector2.zero;
+		RaycastHit2D raycastHit;
+		List<RaycastHit2D> raycastList = new List<RaycastHit2D>();
+
+		if (direction == Direction.Right || direction == Direction.Left) {
+			if (direction == Direction.Right) {
+				rayDirection = Vector2.right;
+				initialRayOrigin = _raycastOrigins.bottomRight;
+			}
+			else if (direction == Direction.Left) {
+				rayDirection = -Vector2.right;
+				initialRayOrigin = _raycastOrigins.bottomLeft;
+			}
+
+			for( var i = 0; i < totalHorizontalRays; i++ ) {
+				Vector2 rayOrigin = new Vector2( initialRayOrigin.x, initialRayOrigin.y + i * _verticalDistanceBetweenRays );
+
+				raycastHit = Physics2D.Raycast( rayOrigin, rayDirection, rayDistance, layerMask );
+
+				DrawCustomRaycastRay(rayOrigin, rayDirection, Color.green);
+
+				if (raycastHit) raycastList.Add(raycastHit);
+			}
+		}
+
+		if (direction == Direction.Up || direction == Direction.Down) {
+			if (direction == Direction.Up) {
+				rayDirection = Vector2.up;
+				initialRayOrigin = _raycastOrigins.topLeft;
+			}
+			else if (direction == Direction.Down) {
+				rayDirection = -Vector2.up;
+				initialRayOrigin = _raycastOrigins.bottomLeft;
+			}
+
+			for( var i = 0; i < totalVerticalRays; i++ ) {
+				Vector2 rayOrigin = new Vector2( initialRayOrigin.x + i * _horizontalDistanceBetweenRays, initialRayOrigin.y );
+				
+				raycastHit = Physics2D.Raycast( rayOrigin, rayDirection, rayDistance, layerMask );
+
+				DrawCustomRaycastRay(rayOrigin, rayDirection, Color.green);
+
+				if (raycastHit) raycastList.Add(raycastHit);
+			}
+		}
+
+		return raycastList.ToArray();
+	}
+
 	/// <summary>
 	/// we have to use a bit of trickery in this one. The rays must be cast from a small distance inside of our
 	/// collider (skinWidth) to avoid zero distance rays which will get the wrong normal. Because of this small offset
@@ -200,6 +260,7 @@ public class CharacterController2D : MonoBehaviour
 			
 			DrawRay( ray, rayDirection, Color.red );
 			_raycastHit = Physics2D.Raycast( ray, rayDirection, rayDistance, platformMask & ~oneWayPlatformMask );
+
 			if( _raycastHit )
 			{
 				// the bottom ray can hit slopes but no other ray can so we have special handling for those cases
@@ -302,6 +363,7 @@ public class CharacterController2D : MonoBehaviour
 			
 			DrawRay( ray, rayDirection, Color.red );
 			_raycastHit = Physics2D.Raycast( ray, rayDirection, rayDistance, mask );
+
 			if( _raycastHit )
 			{
 				// set our new deltaMovement and recalculate the rayDistance taking it into account
@@ -366,8 +428,8 @@ public class CharacterController2D : MonoBehaviour
 		}
 		
 		// set our becameGrounded state based on the previous and current collision state
-		if( !wasGroundedBeforeMoving && collisionState.below )
-			collisionState.becameGroundedThisFrame = true;
+		if( !wasGroundedBeforeMoving && collisionState.below ) collisionState.becameGroundedThisFrame = true;
+		else if ( wasGroundedBeforeMoving && !collisionState.below ) collisionState.becameUngroundedThisFrame = true;
 	}
 	
 }

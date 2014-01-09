@@ -54,6 +54,7 @@
      <Compile Include="Assets\Miscellaneous\Scripts\CharacterController2D.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\Enums.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\NonMovingRigidbody.cs" />
+     <Compile Include="Assets\Miscellaneous\Scripts\ObjectFlipper.cs" />
      <Compile Include="Assets\Objects\Camera\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Objects\Camera\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Objects\Enemies\Scripts\Enemy.cs" />

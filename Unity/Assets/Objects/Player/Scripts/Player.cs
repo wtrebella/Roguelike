@@ -16,7 +16,6 @@ public class Player : MonoBehaviour {
 	public float centeringSpeed = 0.3f;
 
 	[HideInInspector] public Transform currentClimbable;
-	[HideInInspector] public Direction facingDirection = Direction.Right;
 
 	protected bool shouldJumpNextFrame = false;
 	protected ControlManager controlManager;
@@ -32,12 +31,6 @@ public class Player : MonoBehaviour {
 	protected Vector3 outsideForce = Vector3.zero;
 	protected Animator animator;
 	protected float timeOfBeginFall = 0;
-//	protected Animator animator;
-//	protected int animationStateWalk;
-//	protected int animationStateStand;
-//	protected int animationStateJump;
-//	protected int animationStateClimb;
-	protected bool previouslyWasGrounded = true;
 
 	void Awake() {
 		controlManager = GameObject.Find("Control Manager").GetComponent<ControlManager>();
@@ -69,15 +62,13 @@ public class Player : MonoBehaviour {
 		UpdateClimbing(ref velocity);
 		UpdateJumpingAndFalling(ref velocity);
 		ApplyGravity(ref velocity);
-		ApplyOutsideForce(ref velocity);
+		ApplyExternalForce(ref velocity);
 
 		controller.move(velocity * Time.deltaTime);
-		
-		previouslyWasGrounded = controller.isGrounded;
 	}
 
 	void UpdateGun() {
-		gunHolder.facingDirection = facingDirection;
+		gunHolder.facingDirection = GetComponent<ObjectFlipper>().facingDirection;
 		Gun gun = gunHolder.currentGun;
 		if (gun == null) return;
 
@@ -100,14 +91,14 @@ public class Player : MonoBehaviour {
 
 			velocity.x = Mathf.Min(velocity.x + runSpeed, runSpeed);
 
-			Face(Direction.Right);
+			GetComponent<ObjectFlipper>().Face(Direction.Right);
 		}
 		else if (controlManager.GetLeft(ControlState.IsPressed)) {
 			if (controller.isGrounded) animator.SetBool("isRunning", true);
 
 			velocity.x = Mathf.Max(velocity.x - runSpeed, -runSpeed);
 
-			Face(Direction.Left);
+			GetComponent<ObjectFlipper>().Face(Direction.Left);
 		}
 		else animator.SetBool("isRunning", false);
 	}
@@ -161,11 +152,29 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerEnter2D(Collider2D coll) {
+		Enemy enemy = coll.GetComponent<Enemy>();
+		
+		if (enemy) {
+			if (!controller.isGrounded && controller.velocity.y < 0) {
+				JumpableEnemy jumpable = enemy.GetComponent<JumpableEnemy>();
+
+				if (jumpable) {
+					AddExternalForce(new Vector3(0, jumpable.bounceForce, 0));
+					shouldJumpNextFrame = true;
+					enemy.HitWithPlayerFeet(this);
+				}
+			}
+		}
+	}
+
 	void UpdateJumpingAndFalling(ref Vector3 velocity) {
 		bool shouldJump = shouldJumpNextFrame || ((controller.isGrounded || isClimbing) && controlManager.GetJump(ControlState.WasPressed));
 
 		if (shouldJump) {
-			lastActionWasJump = true;
+			if (controlManager.GetJump(ControlState.WasPressed)) lastActionWasJump = true;
+			else lastActionWasJump = false;
+
 			isClimbing = false;
 			shouldJumpNextFrame = false;
 			
@@ -192,7 +201,7 @@ public class Player : MonoBehaviour {
 		if (controller.isGrounded) animator.SetBool("isGrounded", true);
 		else animator.SetBool("isGrounded", false);
 
-		if (previouslyWasGrounded && !controller.isGrounded) timeOfBeginFall = Time.time;
+		if (controller.collisionState.becameUngroundedThisFrame) timeOfBeginFall = Time.time;
 
 		animator.SetFloat("timeFalling", Time.time - timeOfBeginFall);
 	}
@@ -201,12 +210,11 @@ public class Player : MonoBehaviour {
 		velocity.y += manager.gravity * Time.deltaTime;
 	}
 
-	public void AddOutsideForce(Vector3 force) {
+	public void AddExternalForce(Vector3 force) {
 		outsideForce += force;
 	}
 
-	void ApplyOutsideForce(ref Vector3 velocity) {
-		if (outsideForce.y > 0 && !controller.isGrounded) outsideForce.y = 0;
+	void ApplyExternalForce(ref Vector3 velocity) {
 		velocity += outsideForce;
 		outsideForce = Vector3.zero;
 	}
@@ -218,13 +226,6 @@ public class Player : MonoBehaviour {
 		yield return new WaitForSeconds(time);
 
 		controller.platformMask = originalPlatformMask;
-	}
-
-	void Face(Direction dir) {
-		if (facingDirection == dir) return;
-
-		facingDirection = dir;
-		transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
 	}
 
 	void HandleControllerCollidedEvent(RaycastHit2D raycastHit) {
@@ -240,11 +241,5 @@ public class Player : MonoBehaviour {
 			currentGroundTile = null;
 			animator.SetBool("isGrounded", false);
 		}
-
-		if (controller.collisionState.below && raycastHit.collider.GetComponent<JumpableEnemy>() != null) {
-			shouldJumpNextFrame = true;
-			raycastHit.collider.GetComponent<Enemy>().Kill();
-		}
 	}
-
 }
