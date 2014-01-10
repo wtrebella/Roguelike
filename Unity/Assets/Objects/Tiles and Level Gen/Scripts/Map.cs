@@ -3,20 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Map {
-	public const int maxMapHeight = 50;
-	
-	public int mapWidth;
-	public int mapHeight;
+	public const int maxMapHeight = 100;
+	public const int mapWidth = 20;
+	public const int mapHeight = 4;
+
 	public List<Room> rooms;
 	
 	protected List<int> roomHashes;
 	
-	public Map(int mapWidth, int mapHeight) {
-		if (mapHeight > maxMapHeight) throw new UnityException("too many room columns");
-		
-		this.mapWidth = mapWidth;
-		this.mapHeight = mapHeight;
-		
+	public Map() {
+		//if (mapHeight > maxMapHeight) throw new UnityException("too many room columns");
+
 		rooms = new List<Room>();
 		roomHashes = new List<int>();
 		
@@ -32,7 +29,9 @@ public class Map {
 	void GenerateRooms() {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
-				RoomType roomType = RoomType.RoomType1;
+				RoomType roomType = RoomType.NONE;
+				if (y == 0) roomType = 0;
+				else roomType = (RoomType)Random.Range(1, (int)RoomType.NONE);
 				Room newRoom = new Room(this, roomType, x, y);
 				rooms.Add(newRoom);
 				roomHashes.Add(GetRoomHash(x, y));

@@ -20,8 +20,8 @@ public class TileData {
 			td.tileType = TileType.Ground;
 		}
 		else if (c == 'p') {
-			td = new TileDataGun();
-			(td as TileDataGun).gunType = GunType.Pistol;
+			td = new TileDataWeapon();
+			(td as TileDataWeapon).weaponType = WeaponType.Pistol;
 		}
 		else if (c == 't') {
 			td = new TileDataEnemy();
@@ -32,11 +32,11 @@ public class TileData {
 	}
 }
 
-public class TileDataGun : TileData {
-	public GunType gunType = GunType.NONE;
+public class TileDataWeapon : TileData {
+	public WeaponType weaponType = WeaponType.NONE;
 	
-	public TileDataGun() {
-		tileType = TileType.Gun;
+	public TileDataWeapon() {
+		tileType = TileType.Weapon;
 	}
 }
 

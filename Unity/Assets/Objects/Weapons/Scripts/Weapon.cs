@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class Gun : MonoBehaviour {
-	public GunType gunType;
+public class Weapon : MonoBehaviour {
+	public WeaponType weaponType;
 	public GameObject bulletPrefab;
 	public GameObject shellPrefab;
 	public float shellVelocityMultiplier = 10;
@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour {
 	public bool isAutomaticFire = false;
 
 	[HideInInspector] public float timeOfLastShot = 0;
-	[HideInInspector] public GunHolder currentGunHolder = null;
+	[HideInInspector] public WeaponHolder currentWeaponHolder = null;
 	[HideInInspector] public SpriteRenderer spriteRenderer;
 
 	protected Animator animator;
@@ -49,16 +49,16 @@ public class Gun : MonoBehaviour {
 
 	public void Shoot() {
 		Bullet bullet = ((GameObject)Instantiate(bulletPrefab)).GetComponent<Bullet>();
-		bullet.SetGun(this);
+		bullet.SetWeapon(this);
 		bullet.Shoot();
 
 		Shell shell = ((GameObject)Instantiate(shellPrefab)).GetComponent<Shell>();
-		shell.SetGun(this);
+		shell.SetWeapon(this);
 		shell.ShootOut();
 
 		Vector3 actualRecoil = recoilForce;
-		actualRecoil.x *= currentGunHolder.facingDirection == Direction.Left?1:-1;
-		currentGunHolder.gunOwner.AddExternalForce(actualRecoil);
+		actualRecoil.x *= currentWeaponHolder.facingDirection == Direction.Left?1:-1;
+		currentWeaponHolder.weaponOwner.AddExternalForce(actualRecoil);
 
 		Camera.main.GetComponent<CameraShake>().Shake(screenShakeIntensity, screenShakeDecayTime);
 
@@ -70,7 +70,7 @@ public class Gun : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {
-		GunHolder otherGunHolder = coll.GetComponentInChildren<GunHolder>();
-		if (otherGunHolder != null) otherGunHolder.PickupGun(this);
+		WeaponHolder otherWeaponHolder = coll.GetComponentInChildren<WeaponHolder>();
+		if (otherWeaponHolder != null) otherWeaponHolder.PickupWeapon(this);
 	}
 }

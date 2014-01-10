@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour {
 	public int levelNum = 0;
 	public GameObject pistolPrefab;
 	public GameObject turtlePrefab;
-
+	public GameObject borderPiecePrefab;
 	protected Map map;
 	protected TileManager tileManager;
 	protected GameObject tileHolder;
@@ -24,8 +24,10 @@ public class LevelManager : MonoBehaviour {
 	void Start() {
 		GenerateMapData();
 		GenerateLevel();
+		CreateBorder();
 
-		Room topLeftRoom = map.GetRoom(0, map.mapHeight - 1);
+		// place player
+		Room topLeftRoom = map.GetRoom(0, Map.mapHeight - 1);
 
 		List<Tile> emptyTiles = new List<Tile>();
 		for (int y = 0; y < Room.roomHeight; y++) {
@@ -48,12 +50,12 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void GenerateMapData() {
-		map = new Map(10, 2);
+		map = new Map();
 	}
 	
 	void GenerateLevel() {
-		for (int x = 0; x < map.mapWidth; x++) {
-			for (int y = 0; y < map.mapHeight; y++) {
+		for (int x = 0; x < Map.mapWidth; x++) {
+			for (int y = 0; y < Map.mapHeight; y++) {
 				Room room = map.GetRoom(x, y);
 
 				for (int tileX = 0; tileX < Room.roomWidth; tileX++) {
@@ -70,15 +72,15 @@ public class LevelManager : MonoBehaviour {
 							newTile.position = tileOrigin;
 							newTile.parent = tileHolder.transform;
 						}
-						else if (tile.tileData.tileType == TileType.Gun) {
-							TileDataGun tdg = (TileDataGun)tile.tileData;
-							if (tdg.gunType != GunType.NONE) {
-								Gun newGun = null;
-								if (tdg.gunType == GunType.Pistol) newGun = ((GameObject)Instantiate(pistolPrefab)).GetComponent<Gun>();
-								newGun.transform.rotation = Quaternion.identity;
-								newGun.transform.parent = tileHolder.transform;
-								newGun.name = newGun.gunType.ToString();
-								newGun.transform.position = tileOrigin;
+						else if (tile.tileData.tileType == TileType.Weapon) {
+							TileDataWeapon tdw = (TileDataWeapon)tile.tileData;
+							if (tdw.weaponType != WeaponType.NONE) {
+								Weapon newWeapon = null;
+								if (tdw.weaponType == WeaponType.Pistol) newWeapon = ((GameObject)Instantiate(pistolPrefab)).GetComponent<Weapon>();
+								newWeapon.transform.rotation = Quaternion.identity;
+								newWeapon.transform.parent = tileHolder.transform;
+								newWeapon.name = newWeapon.weaponType.ToString();
+								newWeapon.transform.position = tileOrigin;
 							}
 						}
 						else if (tile.tileData.tileType == TileType.Enemy) {
@@ -96,6 +98,37 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void CreateBorder() {
+		float mapWidthInWorldUnits = manager.tileSize * Room.roomWidth * Map.mapWidth;
+		float mapHeightInWorldUnits = manager.tileSize * Room.roomHeight * Map.mapHeight;
+
+		Vector2 bottomLeft = Vector2.zero;
+		Vector2 topLeft = new Vector2(0, mapHeightInWorldUnits);
+		Vector2 topRight = new Vector2(mapWidthInWorldUnits, 0);
+		Vector2 bottomRight = new Vector2(mapWidthInWorldUnits, mapHeightInWorldUnits);
+
+		GameObject bottomBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
+		GameObject topBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
+		GameObject rightBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
+		GameObject leftBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
+
+		float mult = 16;
+		float padding = 10;
+
+		float bottomAndTopPieceWidth = mult * (mapWidthInWorldUnits + padding * 2);
+		float bottomAndTopPieceHeight = mult * padding;
+		float leftAndRightPieceWidth = mult * padding;
+		float leftAndRightPieceHeight = mult * mapHeightInWorldUnits;
+
+		bottomBorderPiece.transform.localScale = topBorderPiece.transform.localScale = new Vector3(bottomAndTopPieceWidth, bottomAndTopPieceHeight, 1);
+		rightBorderPiece.transform.localScale = leftBorderPiece.transform.localScale = new Vector3(leftAndRightPieceWidth, leftAndRightPieceHeight, 1);
+
+		leftBorderPiece.transform.position = new Vector3(-padding / 2f, mapHeightInWorldUnits / 2f, 0);
+		rightBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits + padding / 2f, mapHeightInWorldUnits / 2f, 0);
+		topBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits / 2f, mapHeightInWorldUnits + padding / 2f, 0);
+		bottomBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits / 2f, -padding / 2f, 0);
 	}
 
 	Vector3 GetTileOrigin(Room room, int tileX, int tileY) {

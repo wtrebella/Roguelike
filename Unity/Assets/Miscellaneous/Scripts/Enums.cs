@@ -54,22 +54,25 @@ public enum BulletType {
 public enum TileType {
 	Empty,
 	Ground,
-	Gun,
+	Weapon,
 	Enemy,
 	NONE
 }
 
 public enum RoomType {
-	RoomType1,
-	RoomType2,
-	RoomType3,
+	BottomLeft,
+	BottomRight,
+	TopLeft,
+	TopRight,
+	MidLeft,
+	MidRight,
+	MidTop,
+	MidBottom,
+	Mid,
 	NONE
 }
 
-public enum GunType {
+public enum WeaponType {
 	Pistol,
-	PistolRed,
-	PistolGreen,
-	PistolBlue,
 	NONE
 }

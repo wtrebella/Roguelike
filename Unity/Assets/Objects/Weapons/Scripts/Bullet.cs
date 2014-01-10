@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour {
 	protected bool isDead = false;
 	protected Direction direction;
 	protected Vector3 velocity;
-	protected Gun gun;
+	protected Weapon gun;
 	protected Manager manager;
 	protected bool hasBeenSetup = false;
 	protected bool hasShot = false;
@@ -63,7 +63,7 @@ public class Bullet : MonoBehaviour {
 		if (!hasBeenSetup) throw new UnityException("gun hasn't been set up!");
 
 		particleTrail.Play();
-		direction = gun.currentGunHolder.facingDirection;
+		direction = gun.currentWeaponHolder.facingDirection;
 		transform.position = gun.bulletExitTransform.position;
 		velocity = gun.shootVelocity;
 
@@ -80,7 +80,7 @@ public class Bullet : MonoBehaviour {
 		hasShot = true;
 	}
 
-	public void SetGun(Gun gun) {
+	public void SetWeapon(Weapon gun) {
 		this.gun = gun;
 
 		hasBeenSetup = true;

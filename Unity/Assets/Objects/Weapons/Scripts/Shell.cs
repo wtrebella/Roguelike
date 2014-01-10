@@ -5,7 +5,7 @@ public class Shell : MonoBehaviour {
 	public float lengthOfExistence = 3;
 	public float lengthOfFade = 0.5f;
 
-	protected Gun gun;
+	protected Weapon gun;
 	protected bool hasBeenSetup = false;
 	protected bool hasBegunFade = false;
 	protected bool hasShotOut = false;
@@ -28,7 +28,7 @@ public class Shell : MonoBehaviour {
 		rigidbody2D.angularVelocity = Random.Range(-gun.shellAngularVelocityMultiplier, gun.shellAngularVelocityMultiplier);
 	}
 
-	public void SetGun(Gun gun) {
+	public void SetWeapon(Weapon gun) {
 		this.gun = gun;
 
 		hasBeenSetup = true;

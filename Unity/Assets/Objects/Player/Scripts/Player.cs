@@ -13,14 +13,16 @@ public class Player : MonoBehaviour {
 	public float runSpeed = 2;
 	public float jumpHeight = 2;
 	public float climbSpeed = 2;
+	public float airJumpTime = 0.2f;
 	public float centeringSpeed = 0.3f;
+	public GameObject defaultWeaponPrefab;
 
 	[HideInInspector] public Transform currentClimbable;
 
 	protected bool shouldJumpNextFrame = false;
 	protected ControlManager controlManager;
 	protected Manager manager;
-	protected GunHolder gunHolder;
+	protected WeaponHolder weaponHolder;
 	protected bool lastActionWasJump = false; // eventually you might add other positive y velocity things like springs, which will turn this false
 	protected int originalPlatformMask;
 	protected Transform currentGroundTile;
@@ -37,23 +39,18 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
-		gunHolder = GetComponentInChildren<GunHolder>();
+		weaponHolder = GetComponentInChildren<WeaponHolder>();
 		animator = GetComponent<Animator>();
-
-//		animationStateWalk = Animator.StringToHash("PlayerWalk");
-//		animationStateStand = Animator.StringToHash("PlayerStand");
-//		animationStateJump = Animator.StringToHash("PlayerJump");
-//		animationStateClimb = Animator.StringToHash("PlayerClimb");
-//
-//		animator = playerSpriteObject.GetComponent<Animator>();
 	}
 
 	void Start() {
-
+		if (defaultWeaponPrefab != null) {
+			weaponHolder.PickupWeapon(((GameObject)Instantiate(defaultWeaponPrefab)).GetComponent<Weapon>(), false);
+		}
 	}
 
 	void Update() {
-		UpdateGun();
+		UpdateWeapon();
 
 		Vector3 velocity = controller.velocity;
 		
@@ -67,15 +64,15 @@ public class Player : MonoBehaviour {
 		controller.move(velocity * Time.deltaTime);
 	}
 
-	void UpdateGun() {
-		gunHolder.facingDirection = GetComponent<ObjectFlipper>().facingDirection;
-		Gun gun = gunHolder.currentGun;
-		if (gun == null) return;
+	void UpdateWeapon() {
+		weaponHolder.facingDirection = GetComponent<ObjectFlipper>().facingDirection;
+		Weapon weapon = weaponHolder.currentWeapon;
+		if (weapon == null) return;
 
-		bool shouldShoot = gun.isAutomaticFire && controlManager.GetShoot(ControlState.IsPressed) && gun.CanShoot();
-		shouldShoot = shouldShoot || (!gun.isAutomaticFire && controlManager.GetShoot(ControlState.WasPressed));
+		bool shouldShoot = weapon.isAutomaticFire && controlManager.GetShoot(ControlState.IsPressed) && weapon.CanShoot();
+		shouldShoot = shouldShoot || (!weapon.isAutomaticFire && controlManager.GetShoot(ControlState.WasPressed));
 
-		if (shouldShoot) gun.Shoot();
+		if (shouldShoot) weapon.Shoot();
 	}
 
 	void ApplyDrag(ref Vector3 velocity) {
@@ -169,7 +166,8 @@ public class Player : MonoBehaviour {
 	}
 
 	void UpdateJumpingAndFalling(ref Vector3 velocity) {
-		bool shouldJump = shouldJumpNextFrame || ((controller.isGrounded || isClimbing) && controlManager.GetJump(ControlState.WasPressed));
+		bool shouldJump = shouldJumpNextFrame ||
+			((controller.isGrounded || isClimbing || Time.time - timeOfBeginFall < airJumpTime) && controlManager.GetJump(ControlState.WasPressed));
 
 		if (shouldJump) {
 			if (controlManager.GetJump(ControlState.WasPressed)) lastActionWasJump = true;
