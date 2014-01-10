@@ -6,15 +6,35 @@ public class RoomTemplates {
 	public static char[,] GetRoomTemplate(RoomType type) {
 		char[,] template = null;
 //		int variationsPerType = 2;
-//		int rand = Random.Range(1, variationsPerType + 1);
+		int rand = Random.Range(1, 4);
 
-		template = new char[,] {
-			{'0', '0', '0', '0', '0'},
-			{'0', '0', '1', '0', '0'},
-			{'0', '1', '1', '1', '0'},
-			{'0', '0', '1', '0', '0'},
-			{'0', '0', '0', '0', '0'}
-		};
+		if (rand == 1) {
+			template = new char[,] {
+				{'0', '0', '0', '0', '0'},
+				{'0', '0', '1', '1', '0'},
+				{'0', '0', '1', '1', '0'},
+				{'0', '1', '1', '0', '0'},
+				{'0', '0', '0', '0', '0'}
+			};
+		}
+		else if (rand == 2) {
+			template = new char[,] {
+				{'0', '0', '1', '1', '0'},
+				{'0', '0', '0', '0', '0'},
+				{'1', '0', '0', '0', '1'},
+				{'1', '0', '0', '0', '1'},
+				{'0', '0', '0', '0', '0'}
+			};
+		}
+		else if (rand == 3) {
+			template = new char[,] {
+				{'0', '1', '1', '0', '0'},
+				{'0', '0', '0', '0', '0'},
+				{'0', '0', '0', '1', '0'},
+				{'0', '1', '0', '1', '1'},
+				{'0', '0', '0', '0', '1'}
+			};
+		}
 
 //		if (type == RoomType.BottomLeft) {
 //			if (rand == 1) {
