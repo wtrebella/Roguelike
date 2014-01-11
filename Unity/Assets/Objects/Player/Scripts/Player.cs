@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
 	public float airJumpTime = 0.2f;
 	public float centeringSpeed = 0.3f;
 	public GameObject defaultWeaponPrefab;
+	public GameObject polygonTest;
 
 	[HideInInspector] public Transform currentClimbable;
 
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour {
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 		weaponHolder = GetComponentInChildren<WeaponHolder>();
 		animator = GetComponent<Animator>();
+		polygonTest = GameObject.Find("Polygon Test");
 	}
 
 	void Start() {
@@ -205,7 +207,13 @@ public class Player : MonoBehaviour {
 	}
 
 	void ApplyGravity(ref Vector3 velocity) {
-		velocity.y += manager.gravity * Time.deltaTime;
+		Vector3 gravityOrigin = polygonTest.transform.position;
+		Vector3 gravityNormal = (transform.position - gravityOrigin).normalized;
+		float rotation = Mathf.Atan2(gravityNormal.y, gravityNormal.x) * Mathf.Rad2Deg - 90;
+
+		transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotation));
+
+		velocity += manager.gravity * Time.deltaTime * gravityNormal;
 	}
 
 	public void AddExternalForce(Vector3 force) {

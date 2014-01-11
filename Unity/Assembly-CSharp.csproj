@@ -51,6 +51,7 @@
      <Compile Include="Assets\Managers\Scripts\Manager.cs" />
      <Compile Include="Assets\Managers\Scripts\SpriteManager.cs" />
      <Compile Include="Assets\Managers\Scripts\TileManager.cs" />
+     <Compile Include="Assets\Miscellaneous\Scenes\CurveTestScene\PolygonTest.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\CharacterController2D.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\Enums.cs" />
      <Compile Include="Assets\Miscellaneous\Scripts\NonMovingRigidbody.cs" />
