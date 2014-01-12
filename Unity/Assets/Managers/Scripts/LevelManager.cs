@@ -104,11 +104,6 @@ public class LevelManager : MonoBehaviour {
 		float mapWidthInWorldUnits = manager.tileSize * Room.roomWidth * Map.mapWidth;
 		float mapHeightInWorldUnits = manager.tileSize * Room.roomHeight * Map.mapHeight;
 
-		Vector2 bottomLeft = Vector2.zero;
-		Vector2 topLeft = new Vector2(0, mapHeightInWorldUnits);
-		Vector2 topRight = new Vector2(mapWidthInWorldUnits, 0);
-		Vector2 bottomRight = new Vector2(mapWidthInWorldUnits, mapHeightInWorldUnits);
-
 		GameObject bottomBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
 		GameObject topBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
 		GameObject rightBorderPiece = (GameObject)Instantiate(borderPiecePrefab);

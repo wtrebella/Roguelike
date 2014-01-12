@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</ProjectGuid>
+	<ProjectGuid>{EE37D9F5-A939-B620-B77C-336A52DED6AA}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<AssemblyName>Assembly-UnityScript-Editor</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
 	<BaseDirectory>Assets</BaseDirectory>
@@ -46,39 +46,41 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Managers\Scripts\ControlManager.cs" />
-     <Compile Include="Assets\Managers\Scripts\LevelManager.cs" />
-     <Compile Include="Assets\Managers\Scripts\Manager.cs" />
-     <Compile Include="Assets\Managers\Scripts\SpriteManager.cs" />
-     <Compile Include="Assets\Managers\Scripts\TileManager.cs" />
-     <Compile Include="Assets\Miscellaneous\Scripts\CharacterController2D.cs" />
-     <Compile Include="Assets\Miscellaneous\Scripts\Enums.cs" />
-     <Compile Include="Assets\Miscellaneous\Scripts\NonMovingRigidbody.cs" />
-     <Compile Include="Assets\Miscellaneous\Scripts\ObjectFlipper.cs" />
-     <Compile Include="Assets\Objects\Camera\Scripts\CameraFollow.cs" />
-     <Compile Include="Assets\Objects\Camera\Scripts\CameraShake.cs" />
-     <Compile Include="Assets\Objects\Enemies\Scripts\Enemy.cs" />
-     <Compile Include="Assets\Objects\Enemies\Scripts\JumpableEnemy.cs" />
-     <Compile Include="Assets\Objects\Enemies\Turtle\Scripts\Turtle.cs" />
-     <Compile Include="Assets\Objects\Player\Scripts\Player.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\GroundTile.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\Map.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\Room.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\RoomTemplates.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\Tile.cs" />
-     <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\TileDataWeapon.cs" />
-     <Compile Include="Assets\Objects\Weapons\Scripts\Bullet.cs" />
-     <Compile Include="Assets\Objects\Weapons\Scripts\Shell.cs" />
-     <Compile Include="Assets\Objects\Weapons\Scripts\Weapon.cs" />
-     <Compile Include="Assets\Objects\Weapons\Scripts\WeaponHolder.cs" />
+     <Compile Include="Assets\Editor\Image Effects\AntialiasingAsPostEffectEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\BloomAndLensFlaresEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\BloomEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\CameraMotionBlurEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\ColorCorrectionCurvesEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\ColorCorrectionLutEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\DepthOfField34Editor.js" />
+     <Compile Include="Assets\Editor\Image Effects\DepthOfFieldScatterEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\EdgeDetectEffectNormalsEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\NoiseAndGrainEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\SunShaftsEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\TonemappingEditor.js" />
+     <Compile Include="Assets\Editor\Image Effects\VignettingEditor.js" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-BasicOutline.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-LightedOutline.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Lighted.shader" />
+ <Reference Include="\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEditor.Graphs">
+ <HintPath>\Applications\Unity\Unity.app\Contents\Frameworks\Managed\UnityEditor.Graphs.dll</HintPath>
+ </Reference>
+ <Reference Include="\Applications\Unity\Unity.app\Contents\PlaybackEngines\iPhonePlayer\EditorExtensions\UnityEditor.iOS.Extensions">
+ <HintPath>\Applications\Unity\Unity.app\Contents\PlaybackEngines\iPhonePlayer\EditorExtensions\UnityEditor.iOS.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="\Applications\Unity\Unity.app\Contents\PlaybackEngines\BB10Player\EditorExtensions\UnityEditor.BB10.Extensions">
+ <HintPath>\Applications\Unity\Unity.app\Contents\PlaybackEngines\BB10Player\EditorExtensions\UnityEditor.BB10.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="\Applications\Unity\Unity.app\Contents\PlaybackEngines\AndroidPlayer\EditorExtensions\UnityEditor.Android.Extensions">
+ <HintPath>\Applications\Unity\Unity.app\Contents\PlaybackEngines\AndroidPlayer\EditorExtensions\UnityEditor.Android.Extensions.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{2662B409-6332-1E56-D797-C9025C53BDD6}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{2662B409-6332-1E56-D797-C9025C53BDD6}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

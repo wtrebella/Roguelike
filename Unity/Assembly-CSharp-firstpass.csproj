@@ -79,6 +79,10 @@
      <Compile Include="Assets\Plugins\InControl\Unity\UnityInputDeviceManager.cs" />
      <Compile Include="Assets\Plugins\InControl\Unity\UnityInputDeviceProfile.cs" />
      <Compile Include="Assets\Plugins\InControl\Unity\UnknownDeviceProfile.cs" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-BasicOutline.shader" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-LightedOutline.shader" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Lighted.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
