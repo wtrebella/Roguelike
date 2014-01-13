@@ -188,6 +188,42 @@ public class CharacterController2D : MonoBehaviour
 		_raycastOrigins.bottomLeft.y += skinWidth;
 	}
 
+	public bool RightSideIsHovering(float downwardRaycastDistance) {
+		if (downwardRaycastDistance > 0) downwardRaycastDistance *= -1;
+
+		primeRaycastOrigins(Vector3.zero, Vector3.zero);
+
+		var rayDistance = Mathf.Abs(downwardRaycastDistance) + skinWidth;
+		var rayDirection = -Vector2.up;
+		var rayOrigin = _raycastOrigins.bottomRight;
+		
+		var mask = platformMask;
+
+		var ray = new Vector2( rayOrigin.x , rayOrigin.y );
+			
+		_raycastHit = Physics2D.Raycast( ray, rayDirection, rayDistance, mask );
+		
+		return _raycastHit.collider == null;
+	}
+
+	public bool LeftSideIsHovering(float downwardRaycastDistance) {
+		if (downwardRaycastDistance > 0) downwardRaycastDistance *= -1;
+
+		primeRaycastOrigins(Vector3.zero, Vector3.zero);
+		
+		var rayDistance = Mathf.Abs(downwardRaycastDistance) + skinWidth;
+		var rayDirection = -Vector2.up;
+		var rayOrigin = _raycastOrigins.bottomLeft;
+		
+		var mask = platformMask;
+		
+		var ray = new Vector2( rayOrigin.x , rayOrigin.y );
+		
+		_raycastHit = Physics2D.Raycast( ray, rayDirection, rayDistance, mask );
+		
+		return _raycastHit.collider == null;
+	}
+
 	public RaycastHit2D[] Raycast(Direction direction, float rayDistance, int layerMask) {
 		primeRaycastOrigins(Vector3.zero, Vector3.zero);
 
@@ -408,12 +444,16 @@ public class CharacterController2D : MonoBehaviour
 		primeRaycastOrigins( desiredPosition, deltaMovement );
 		
 		// first we check movement in the horizontal dir
-		if( deltaMovement.x != 0 )
+		if( deltaMovement.x != 0 ) {
 			moveHorizontally( ref deltaMovement );
+			velocity.x = deltaMovement.x / Time.deltaTime;
+		}
 		
 		// next, check movement in the vertical dir
-		if( deltaMovement.y != 0 )
+		if( deltaMovement.y != 0 ) {
 			moveVertically( ref deltaMovement );
+			velocity.y = deltaMovement.y / Time.deltaTime;
+		}
 		
 		// move then update our state
 		if( usePhysicsForMovement )
@@ -424,7 +464,6 @@ public class CharacterController2D : MonoBehaviour
 		else
 		{
 			transform.Translate( deltaMovement );
-			velocity = deltaMovement / Time.deltaTime;
 		}
 		
 		// set our becameGrounded state based on the previous and current collision state

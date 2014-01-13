@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Room {
-	public const int roomWidth = 10;
-	public const int roomHeight = 10;
+	public const int roomWidth = 12;
+	public const int roomHeight = 12;
 	
 	public int roomIndexX;
 	public int roomIndexY;

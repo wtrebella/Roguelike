@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Bullet : MonoBehaviour {
-	public float gravityMultiplier = 1;
+	//public float gravityMultiplier = 1;
 	public float rotationSpeed = 0;
 	public BulletType bulletType;
 	public GameObject bulletExplosionPrefab;
@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour {
 	protected GameObject bulletExplosion;
 	protected bool isDead = false;
 	protected Direction direction;
-	protected Vector3 velocity;
+	//protected Vector3 velocity;
 	protected Weapon gun;
 	protected Manager manager;
 	protected bool hasBeenSetup = false;
@@ -30,15 +30,17 @@ public class Bullet : MonoBehaviour {
 	void Update () {
 		if (!hasBeenSetup || !hasShot || isDead) return;
 
-		velocity.y += manager.gravity * gravityMultiplier * Time.deltaTime;
+		//velocity.y += manager.gravity * gravityMultiplier * Time.deltaTime;
 
-		transform.position += velocity * Time.deltaTime;
+		//transform.position += velocity * Time.deltaTime;
 		transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.deltaTime));
-
-		float velocityAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-		particleTrail.transform.rotation = Quaternion.Euler(velocityAngle, 270, 0);
-
+		
 		if ((transform.position - gun.transform.position).magnitude > 50) Kill();
+	}
+
+	void FixedUpdate() {
+		float velocityAngle = Mathf.Atan2(rigidbody2D.velocity.y, rigidbody2D.velocity.x) * Mathf.Rad2Deg;
+		particleTrail.transform.rotation = Quaternion.Euler(velocityAngle, 270, 0);
 	}
 
 	void Kill() {
@@ -65,18 +67,21 @@ public class Bullet : MonoBehaviour {
 		particleTrail.Play();
 		direction = gun.currentWeaponHolder.facingDirection;
 		transform.position = gun.bulletExitTransform.position;
-		velocity = gun.shootVelocity;
+		Vector3 newVelocity = gun.shootVelocity;
 
 		int dirMultiplier = direction == Direction.Right?1:-1;
 		
-		velocity.x *= dirMultiplier;
+		newVelocity.x *= dirMultiplier;
 
 		float spreadAngle = gun.baseSpreadAngle;
 		float recoilSpreadMultiplier = Mathf.Max(0, (1 - (Time.time - gun.timeOfLastShot) / gun.recoilTime)) * gun.recoilSpreadMultiplier + 1;
 		if (recoilSpreadMultiplier > 0 && spreadAngle == 0) spreadAngle = 1;
 		spreadAngle *= recoilSpreadMultiplier;
 
-		velocity = Quaternion.Euler(0, 0, Random.Range(-spreadAngle / 2f, spreadAngle / 2f)) * velocity;
+		newVelocity = Quaternion.Euler(0, 0, Random.Range(-spreadAngle / 2f, spreadAngle / 2f)) * newVelocity;
+
+		rigidbody2D.velocity = newVelocity;
+
 		hasShot = true;
 	}
 

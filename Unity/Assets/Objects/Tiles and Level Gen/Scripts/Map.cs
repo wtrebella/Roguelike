@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Map {
 	public const int maxMapHeight = 100;
 	public const int mapWidth = 10;
-	public const int mapHeight = 1;
+	public const int mapHeight = 3;
 
 	public List<Room> rooms;
 	

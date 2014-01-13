@@ -59,6 +59,7 @@
      <Compile Include="Assets\Objects\Camera\Scripts\CameraShake.cs" />
      <Compile Include="Assets\Objects\Enemies\Scripts\Enemy.cs" />
      <Compile Include="Assets\Objects\Enemies\Scripts\JumpableEnemy.cs" />
+     <Compile Include="Assets\Objects\Enemies\Scripts\WalkBackAndForth.cs" />
      <Compile Include="Assets\Objects\Enemies\Turtle\Scripts\Turtle.cs" />
      <Compile Include="Assets\Objects\Player\Scripts\Player.cs" />
      <Compile Include="Assets\Objects\Tiles and Level Gen\Scripts\GroundTile.cs" />

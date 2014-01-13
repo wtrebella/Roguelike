@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof(CharacterController2D))]
+
 public class Enemy : MonoBehaviour {
 	public EnemyType enemyType = EnemyType.NONE;
 	public AudioClip killSound;
+	public float gravityMultiplier = 1;
 
 	[HideInInspector] public CharacterController2D controller;
 
@@ -20,13 +23,15 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	void Update() {
+
+	}
+
+	protected void ApplyGravity() {
+		float vel = controller.velocity.y + manager.gravity * gravityMultiplier * Time.deltaTime;
+
+		controller.move(new Vector3(0, vel * Time.deltaTime, 0));
+	}
 	
-	}
-
-	protected void ApplyGravity(ref Vector3 velocity) {
-		velocity.y += manager.gravity * Time.deltaTime;
-	}
-
 	virtual public void Kill() {
 		GameObject.Destroy(this.gameObject);
 		AudioSource.PlayClipAtPoint(killSound, Vector3.zero);
