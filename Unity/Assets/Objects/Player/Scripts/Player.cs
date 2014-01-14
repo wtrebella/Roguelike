@@ -58,7 +58,7 @@ public class Player : MonoBehaviour {
 		UpdateRunning(ref velocity);
 		UpdateClimbing(ref velocity);
 		UpdateJumpingAndFalling(ref velocity);
-		ApplyGravity(ref velocity);
+		if (!controller.collisionState.becameGroundedThisFrame) ApplyGravity(ref velocity);
 		ApplyExternalForce(ref velocity);
 
 		controller.move(velocity * Time.deltaTime);
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D coll) {
-		Enemy enemy = coll.GetComponent<Enemy>();
+		AbstractEnemy enemy = coll.GetComponent<AbstractEnemy>();
 		
 		if (enemy) {
 			if (!controller.isGrounded && controller.velocity.y < 0) {

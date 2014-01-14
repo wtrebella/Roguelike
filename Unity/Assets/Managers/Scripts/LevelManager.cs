@@ -86,8 +86,8 @@ public class LevelManager : MonoBehaviour {
 						else if (tile.tileData.tileType == TileType.Enemy) {
 							TileDataEnemy tde = (TileDataEnemy)tile.tileData;
 							if (tde.enemyType != EnemyType.NONE) {
-								Enemy newTurtle = null;
-								if (tde.enemyType == EnemyType.Turtle) newTurtle = ((GameObject)Instantiate(turtlePrefab)).GetComponent<Enemy>();
+								AbstractEnemy newTurtle = null;
+								if (tde.enemyType == EnemyType.Turtle) newTurtle = ((GameObject)Instantiate(turtlePrefab)).GetComponent<AbstractEnemy>();
 								newTurtle.transform.rotation = Quaternion.identity;
 								newTurtle.transform.parent = tileHolder.transform;
 								newTurtle.name = newTurtle.enemyType.ToString();

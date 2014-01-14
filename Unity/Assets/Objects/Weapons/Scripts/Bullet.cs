@@ -99,7 +99,7 @@ public class Bullet : MonoBehaviour {
 			AudioSource.PlayClipAtPoint(woodHitSound, Vector3.zero);
 		}
 
-		Enemy enemy = coll.GetComponent<Enemy>();
+		AbstractEnemy enemy = coll.GetComponent<AbstractEnemy>();
 		if (enemy) {
 			enemy.HitWithBullet(this);
 			Kill();
