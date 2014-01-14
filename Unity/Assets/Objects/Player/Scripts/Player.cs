@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
 	public GameObject defaultWeaponPrefab;
 
 	[HideInInspector] public Transform currentClimbable;
+	[HideInInspector] public bool isDead = false;
 
 	protected bool shouldJumpNextFrame = false;
 	protected ControlManager controlManager;
@@ -50,6 +51,8 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update() {
+		if (isDead) return;
+
 		UpdateWeapon();
 
 		Vector3 velocity = controller.velocity;
@@ -162,6 +165,8 @@ public class Player : MonoBehaviour {
 					enemy.HitWithPlayerFeet(this);
 				}
 			}
+
+			else Die();
 		}
 	}
 
@@ -239,5 +244,13 @@ public class Player : MonoBehaviour {
 			currentGroundTile = null;
 			animator.SetBool("isGrounded", false);
 		}
+	}
+
+	void Die() {
+		if (isDead) return;
+
+		controller.usePhysicsForMovement = true;
+
+		isDead = true;
 	}
 }

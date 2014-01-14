@@ -13,6 +13,30 @@ public class Manager : MonoBehaviour {
 	public float gravity = -50;
 	public float tileSize = 0.7f;
 
+	protected Player player;
+	protected ControlManager controlManager;
+
+	void Awake() {
+		player = GameObject.Find("Player").GetComponent<Player>();
+		controlManager = GameObject.Find("Control Manager").GetComponent<ControlManager>();
+	}
+
+	// Use this for initialization
+	void Start () {
+		InputManager.Setup();
+	}
+
+	// Update is called once per frame
+	void Update () {
+		InputManager.Update();
+		
+		if (player.isDead) {
+			if (controlManager.GetEnter(ControlState.WasPressed)) {
+				Application.LoadLevel("Main Scene");
+			}
+		}
+	}
+
 	public static Rect GetScreenRectInWorldPoints() {
 		Vector3 screenOrigin = Camera.main.ViewportToScreenPoint(new Vector3(0, 0, 0));
 		Vector3 screenExtents = Camera.main.ViewportToScreenPoint(new Vector3(1, 1,  0));
@@ -38,15 +62,5 @@ public class Manager : MonoBehaviour {
 		if (i > 9 || i < 0) throw new UnityException("not set up for multi-digit or negative ints");
 		
 		return Convert.ToChar(i + 48);
-	}
-
-	// Use this for initialization
-	void Start () {
-		InputManager.Setup();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		InputManager.Update();
 	}
 }

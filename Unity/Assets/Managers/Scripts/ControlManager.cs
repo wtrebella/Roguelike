@@ -11,6 +11,20 @@ public class ControlManager : MonoBehaviour {
 	public InputControlType jumpButton = InputControlType.Action1;
 	public InputControlType shootButton = InputControlType.Action3;
 
+	public bool GetEnter(ControlState state) {
+		if (state == ControlState.WasPressed) {
+			return Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || InputManager.ActiveDevice.Action1.WasPressed || Input.GetMouseButtonDown(0);
+		}
+		else if (state == ControlState.IsPressed) {
+			return Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return) || InputManager.ActiveDevice.Action1.IsPressed || Input.GetMouseButton(0);
+		}
+		else if (state == ControlState.WasReleased) {
+			return Input.GetKeyUp(KeyCode.KeypadEnter) || Input.GetKeyUp(KeyCode.Return) || InputManager.ActiveDevice.Action1.WasReleased || Input.GetMouseButtonUp(0);
+		}
+
+		return false;
+	}
+
 	public bool GetShoot(ControlState state) {
 		if (state == ControlState.WasPressed) {
 			return Input.GetKeyDown(shootKey) || InputManager.ActiveDevice.GetControl(shootButton).WasPressed || Input.GetMouseButtonDown(0);
