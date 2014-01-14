@@ -6,7 +6,9 @@ public class LevelManager : MonoBehaviour {
 	public int levelNum = 0;
 	public GameObject pistolPrefab;
 	public GameObject turtlePrefab;
+	public GameObject ratPrefab;
 	public GameObject borderPiecePrefab;
+
 	protected Map map;
 	protected TileManager tileManager;
 	protected GameObject tileHolder;
@@ -86,12 +88,15 @@ public class LevelManager : MonoBehaviour {
 						else if (tile.tileData.tileType == TileType.Enemy) {
 							TileDataEnemy tde = (TileDataEnemy)tile.tileData;
 							if (tde.enemyType != EnemyType.NONE) {
-								AbstractEnemy newTurtle = null;
-								if (tde.enemyType == EnemyType.Turtle) newTurtle = ((GameObject)Instantiate(turtlePrefab)).GetComponent<AbstractEnemy>();
-								newTurtle.transform.rotation = Quaternion.identity;
-								newTurtle.transform.parent = tileHolder.transform;
-								newTurtle.name = newTurtle.enemyType.ToString();
-								newTurtle.transform.position = tileOrigin;
+								AbstractEnemy newEnemy = null;
+
+								if (tde.enemyType == EnemyType.Turtle) newEnemy = ((GameObject)Instantiate(turtlePrefab)).GetComponent<AbstractEnemy>();
+								else if (tde.enemyType == EnemyType.Rat) newEnemy = ((GameObject)Instantiate(ratPrefab)).GetComponent<AbstractEnemy>();
+
+								newEnemy.transform.rotation = Quaternion.identity;
+								newEnemy.transform.parent = tileHolder.transform;
+								newEnemy.transform.position = tileOrigin;
+								newEnemy.name = newEnemy.enemyType.ToString();
 							}
 						}
 					}

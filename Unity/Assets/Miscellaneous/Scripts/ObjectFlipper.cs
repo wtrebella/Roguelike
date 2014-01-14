@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ObjectFlipper : MonoBehaviour {
-	public Transform spriteObject;
+	public Transform objectToFlip;
 
 	[HideInInspector] public Direction facingDirection = Direction.Right;
 
@@ -21,10 +21,10 @@ public class ObjectFlipper : MonoBehaviour {
 		
 		facingDirection = dir;
 
-		float newScaleX = Mathf.Abs(spriteObject.localScale.x);
+		float newScaleX = Mathf.Abs(objectToFlip.localScale.x);
 		if (dir == Direction.Left) newScaleX *= -1;
 
-		spriteObject.localScale = new Vector3(newScaleX, spriteObject.localScale.y, spriteObject.localScale.z);
+		objectToFlip.localScale = new Vector3(newScaleX, objectToFlip.localScale.y, objectToFlip.localScale.z);
 	}
 
 	public void Flip() {

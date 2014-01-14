@@ -18,6 +18,7 @@ public enum ControlState {
 
 public enum EnemyType {
 	Turtle,
+	Rat,
 	NONE
 }
 

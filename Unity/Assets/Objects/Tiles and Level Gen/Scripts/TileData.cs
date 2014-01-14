@@ -27,6 +27,10 @@ public class TileData {
 			td = new TileDataEnemy();
 			(td as TileDataEnemy).enemyType = EnemyType.Turtle;
 		}
+		else if (c == 'r') {
+			td = new TileDataEnemy();
+			(td as TileDataEnemy).enemyType = EnemyType.Rat;
+		}
 		
 		return td;
 	}
