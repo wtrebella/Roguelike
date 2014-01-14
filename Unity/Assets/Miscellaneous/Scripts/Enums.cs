@@ -60,19 +60,6 @@ public enum TileType {
 	NONE
 }
 
-public enum RoomType {
-	BottomLeft,
-	BottomRight,
-	TopLeft,
-	TopRight,
-	MidLeft,
-	MidRight,
-	MidTop,
-	MidBottom,
-	Mid,
-	NONE
-}
-
 public enum WeaponType {
 	Pistol,
 	NONE

@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Room {
-	public const int roomWidth = 12;
-	public const int roomHeight = 12;
+	public const int roomWidth = 2;
+	public const int roomHeight = 10;
 	
 	public int roomIndexX;
 	public int roomIndexY;
@@ -13,7 +13,7 @@ public class Room {
 	protected Map map;
 	protected List<int> tileHashes;
 	
-	public Room(Map map, RoomType roomType, int roomIndexX, int roomIndexY) {
+	public Room(Map map, int roomType, int roomIndexX, int roomIndexY) {
 		this.roomIndexX = roomIndexX;
 		this.roomIndexY = roomIndexY;
 		this.map = map;
@@ -35,7 +35,7 @@ public class Room {
 		tileHashes.Add(GetTileHash(tile.indexInRoomX, tile.indexInRoomY));
 	}
 	
-	void GenerateTiles(RoomType roomType) {
+	void GenerateTiles(int roomType) {
 		char[,] template = RoomTemplates.GetRoomTemplate(roomType);
 
 		for (int x = 0; x < roomWidth; x++) {

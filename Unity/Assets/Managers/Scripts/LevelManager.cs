@@ -12,13 +12,19 @@ public class LevelManager : MonoBehaviour {
 	protected Map map;
 	protected TileManager tileManager;
 	protected GameObject tileHolder;
+	protected GameObject enemyHolder;
 	protected Manager manager;
 	protected Player player;
 
 	void Awake() {
 		tileManager = GameObject.Find("Tile Manager").GetComponent<TileManager>();
+
 		tileHolder = GameObject.Find("Tile Holder");
 		if (!tileHolder) tileHolder = new GameObject("Tile Holder");
+
+		enemyHolder = GameObject.Find("Enemy Holder");
+		if (!enemyHolder) enemyHolder = new GameObject("Enemy Holder");
+
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 		player = GameObject.Find("Player").GetComponent<Player>();
 	}
@@ -94,7 +100,7 @@ public class LevelManager : MonoBehaviour {
 								else if (tde.enemyType == EnemyType.Rat) newEnemy = ((GameObject)Instantiate(ratPrefab)).GetComponent<AbstractEnemy>();
 
 								newEnemy.transform.rotation = Quaternion.identity;
-								newEnemy.transform.parent = tileHolder.transform;
+								newEnemy.transform.parent = enemyHolder.transform;
 								newEnemy.transform.position = tileOrigin;
 								newEnemy.name = newEnemy.enemyType.ToString();
 							}

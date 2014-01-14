@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class Map {
 	public const int maxMapHeight = 100;
-	public const int mapWidth = 10;
-	public const int mapHeight = 3;
+	public const int mapWidth = 50;
+	public const int mapHeight = 1;
 
 	public List<Room> rooms;
 	
@@ -29,9 +29,9 @@ public class Map {
 	void GenerateRooms() {
 		for (int x = 0; x < mapWidth; x++) {
 			for (int y = 0; y < mapHeight; y++) {
-				RoomType roomType = RoomType.NONE;
-				if (y == 0) roomType = 0;
-				else roomType = (RoomType)Random.Range(1, (int)RoomType.NONE);
+				int roomType = 1;
+//				if (y == 0) roomType = 0;
+//				else roomType = Random.Range(1, 4);
 				Room newRoom = new Room(this, roomType, x, y);
 				rooms.Add(newRoom);
 				roomHashes.Add(GetRoomHash(x, y));
