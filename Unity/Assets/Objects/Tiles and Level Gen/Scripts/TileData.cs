@@ -19,6 +19,11 @@ public class TileData {
 			td = new TileData();
 			td.tileType = TileType.Ground;
 		}
+		else if (c == '2') {
+			td = new TileData();
+			if (Random.value < 0.5f) td.tileType = TileType.Ground;
+			else td.tileType = TileType.Empty;
+		}
 		else if (c == 'p') {
 			td = new TileDataWeapon();
 			(td as TileDataWeapon).weaponType = WeaponType.Pistol;

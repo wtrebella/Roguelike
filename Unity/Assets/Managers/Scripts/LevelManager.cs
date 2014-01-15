@@ -113,10 +113,10 @@ public class LevelManager : MonoBehaviour {
 
 	void CreateBorder() {
 		float mapWidthInWorldUnits = manager.tileSize * Room.roomWidth * Map.mapWidth;
-		float mapHeightInWorldUnits = manager.tileSize * Room.roomHeight * Map.mapHeight;
+		float mapHeightInWorldUnits = manager.tileSize * (Room.roomHeight + Room.roomHeightExtra) * Map.mapHeight;
 
 		GameObject bottomBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
-		//GameObject topBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
+		GameObject topBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
 		GameObject rightBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
 		GameObject leftBorderPiece = (GameObject)Instantiate(borderPiecePrefab);
 
@@ -126,24 +126,23 @@ public class LevelManager : MonoBehaviour {
 
 		float mult = 16;
 		float padding = 10;
-		float wallMult = 10;
 
 		float bottomAndTopPieceWidth = mult * (mapWidthInWorldUnits + padding * 2);
 		float bottomAndTopPieceHeight = mult * padding;
 		float leftAndRightPieceWidth = mult * padding;
-		float leftAndRightPieceHeight = mult * mapHeightInWorldUnits * wallMult;
+		float leftAndRightPieceHeight = mult * mapHeightInWorldUnits;
 
-		bottomBorderPiece.transform.localScale = /*topBorderPiece.transform.localScale = */new Vector3(bottomAndTopPieceWidth, bottomAndTopPieceHeight, 1);
+		bottomBorderPiece.transform.localScale = topBorderPiece.transform.localScale = new Vector3(bottomAndTopPieceWidth, bottomAndTopPieceHeight, 1);
 		rightBorderPiece.transform.localScale = leftBorderPiece.transform.localScale = new Vector3(leftAndRightPieceWidth, leftAndRightPieceHeight, 1);
 
-		leftBorderPiece.transform.position = new Vector3(-padding / 2f, leftAndRightPieceHeight / 2f / mult, 0);
-		rightBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits + padding / 2f, leftAndRightPieceHeight / 2f / mult, 0);
-		//topBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits / 2f, mapHeightInWorldUnits + padding / 2f, 0);
+		leftBorderPiece.transform.position = new Vector3(-padding / 2f, mapHeightInWorldUnits / 2f, 0);
+		rightBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits + padding / 2f, mapHeightInWorldUnits / 2f, 0);
+		topBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits / 2f, mapHeightInWorldUnits + padding / 2f, 0);
 		bottomBorderPiece.transform.position = new Vector3(mapWidthInWorldUnits / 2f, -padding / 2f, 0);
 	}
 
 	Vector3 GetTileOrigin(Room room, int tileX, int tileY) {
-		return new Vector3((Room.roomWidth * room.roomIndexX + tileX + 0.5f) * manager.tileSize, (Room.roomHeight * room.roomIndexY + tileY + 0.5f) * manager.tileSize, 0);
+		return new Vector3((Room.roomWidth * room.roomIndexX + tileX + 0.5f) * manager.tileSize, ((Room.roomHeight + Room.roomHeightExtra) * room.roomIndexY + tileY + 0.5f) * manager.tileSize, 0);
 	}
 
 	Vector3 GetTileOrigin(Tile tile) {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Room {
 	public const int roomWidth = 10;
 	public const int roomHeight = 10;
+	public const int roomHeightExtra = 5;
 	
 	public int roomIndexX;
 	public int roomIndexY;
