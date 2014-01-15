@@ -39,11 +39,13 @@ public class Room {
 	void GenerateTiles(int roomType) {
 		char[,] template = RoomTemplates.GetRoomTemplate(roomType);
 
+		Dictionary<char, float> randValsDict = TileData.GetDictionaryOfCharsAndRandomValues();
+
 		for (int x = 0; x < roomWidth; x++) {
 			for (int y = 0; y < roomHeight; y++) {
 				Tile tile = new Tile(this, x, y);
 
-				tile.tileData = TileData.CharToTileData(template[x, y]);
+				tile.tileData = TileData.CharToTileData(template[x, y], randValsDict);
 
 				AddTile(tile);
 			}

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TileData {
 	public TileType tileType = TileType.NONE;
@@ -8,7 +9,7 @@ public class TileData {
 
 	}
 
-	public static TileData CharToTileData(char c) {
+	public static TileData CharToTileData(char c, Dictionary<char, float> randValsDict = null) {
 		TileData td = null;
 		
 		if (c == '0') {
@@ -19,9 +20,9 @@ public class TileData {
 			td = new TileData();
 			td.tileType = TileType.Ground;
 		}
-		else if (c == '2') {
+		else if (c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') {
 			td = new TileData();
-			if (Random.value < 0.5f) td.tileType = TileType.Ground;
+			if (randValsDict[c] < 0.5f) td.tileType = TileType.Ground;
 			else td.tileType = TileType.Empty;
 		}
 		else if (c == 'p') {
@@ -38,6 +39,21 @@ public class TileData {
 		}
 		
 		return td;
+	}
+
+	public static char[] GetAllChars() {
+		string s = "0123456789ptr";
+		return s.ToCharArray();
+	}
+
+	public static Dictionary<char, float> GetDictionaryOfCharsAndRandomValues() {
+		Dictionary<char, float> newDict = new Dictionary<char, float>();
+
+		char[] ca = GetAllChars();
+
+		foreach (char c in ca) newDict.Add(c, Random.value);
+
+		return newDict;
 	}
 }
 
