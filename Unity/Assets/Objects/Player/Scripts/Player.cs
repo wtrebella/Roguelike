@@ -186,7 +186,7 @@ public class Player : MonoBehaviour {
 
 			AddExternalForce(new Vector3(side * enemy.pushback, 0, 0));
 
-			BeginFlashing(3);
+			BeginFlashing(0.75f);
 		}
 	}
 
