@@ -5,26 +5,47 @@ using System.Collections;
 
 public class AbstractEnemy : MonoBehaviour {
 	public AudioClip killSound;
-	public float gravityMultiplier = 1;
+
 	public bool shouldGoOverLedges = false;
+	public bool isJumpable = true;
+
+	public float gravityMultiplier = 1;
+	public float health = 3;
+	public float infectionSpread = 10;
+	public float pushback = 5;
+	public float jumpoff = 2;
 
 	[HideInInspector] public EnemyType enemyType = EnemyType.NONE;
 	[HideInInspector] public CharacterController2D controller;
 
 	protected Manager manager;
 
-	public virtual void Awake() {
+	virtual public void Awake() {
 		controller = GetComponent<CharacterController2D>();
 		controller.onControllerCollidedEvent += HandleControllerCollidedEvent;
 		manager = GameObject.Find("Manager").GetComponent<Manager>();
 	}
 
-	public virtual void Start() {
+	virtual public void Start() {
 
 	}
 	
-	public virtual void Update() {
-	
+	virtual public void Update() {
+		throw new UnityException("haven't overridden update in " + this.name);
+	}
+
+	virtual public void HitWithBullet(Bullet bullet) {
+		DamageBy(bullet.power);
+	}
+
+	virtual public void HitWithPlayerFeet(Player player) {
+		DamageBy(player.footPower);
+	}
+
+	virtual protected void DamageBy(float damageAmount) {
+		health = Mathf.Max(health - damageAmount, 0);
+		
+		if (health == 0) Kill();
 	}
 
 	protected void ApplyGravity(ref Vector3 velocity) {
@@ -34,14 +55,6 @@ public class AbstractEnemy : MonoBehaviour {
 	virtual public void Kill() {
 		GameObject.Destroy(this.gameObject);
 		AudioSource.PlayClipAtPoint(killSound, Vector3.zero);
-	}
-
-	virtual public void HitWithBullet(Bullet bullet) {
-
-	}
-
-	virtual public void HitWithPlayerFeet(Player player) {
-
 	}
 
 	virtual public void HandleControllerCollidedEvent(RaycastHit2D raycastHit) {

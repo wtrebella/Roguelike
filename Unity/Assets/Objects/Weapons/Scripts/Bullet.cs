@@ -4,6 +4,7 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 	//public float gravityMultiplier = 1;
 	public float rotationSpeed = 0;
+	public float power = 1;
 	public BulletType bulletType;
 	public GameObject bulletExplosionPrefab;
 	public AudioClip woodHitSound;
@@ -94,7 +95,10 @@ public class Bullet : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (isDead) return;
 
-		if (coll.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+		GroundTile groundTile = coll.GetComponent<GroundTile>();
+
+		if (groundTile != null) {
+			groundTile.HitWithBullet(this);
 			Kill();
 			AudioSource.PlayClipAtPoint(woodHitSound, Vector3.zero);
 		}

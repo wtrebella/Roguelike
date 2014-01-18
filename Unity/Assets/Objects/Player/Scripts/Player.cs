@@ -15,11 +15,18 @@ public class Player : MonoBehaviour {
 	public float climbSpeed = 2;
 	public float airJumpTime = 0.2f;
 	public float centeringSpeed = 0.3f;
+	public float footPower = 1;
+	public float infection = 0;
+	public float postDamageCoolDown = 0.5f;
 	public GameObject defaultWeaponPrefab;
 
 	[HideInInspector] public Transform currentClimbable;
 	[HideInInspector] public bool isDead = false;
 
+	protected float flashingLength = 0.5f;
+	protected bool isFlashing = false;
+	protected float flashingStartTime = 0;
+	protected float lastDamageTime = 0;
 	protected bool shouldJumpNextFrame = false;
 	protected ControlManager controlManager;
 	protected Manager manager;
@@ -54,6 +61,7 @@ public class Player : MonoBehaviour {
 		if (isDead) return;
 
 		UpdateWeapon();
+		UpdateFlashing();
 
 		Vector3 velocity = controller.velocity;
 		
@@ -155,19 +163,61 @@ public class Player : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll) {
 		AbstractEnemy enemy = coll.GetComponent<AbstractEnemy>();
 		
-		if (enemy) {
-			if (!controller.isGrounded && controller.velocity.y < 0) {
-				JumpableEnemy jumpable = enemy.GetComponent<JumpableEnemy>();
+		if (enemy) IntersectWithEnemy(enemy);
+	}
 
-				if (jumpable) {
-					AddExternalForce(new Vector3(0, jumpable.bounceForce, 0));
-					shouldJumpNextFrame = true;
-					enemy.HitWithPlayerFeet(this);
-				}
+	public void IntersectWithEnemy(AbstractEnemy enemy) {
+		if (isFlashing) return;
+
+		// landed on top
+		if (!controller.isGrounded && controller.velocity.y < 0) {
+			if (enemy.isJumpable) {
+				AddExternalForce(new Vector3(0, enemy.jumpoff, 0));
+				Jump();
+				enemy.HitWithPlayerFeet(this);
 			}
-
-			else Die();
 		}
+
+		// touched from side or underneath
+		else {
+			InfectBy(enemy.infectionSpread);
+
+			float side = Mathf.Sign(transform.position.x - enemy.transform.position.x);
+
+			AddExternalForce(new Vector3(side * enemy.pushback, 0, 0));
+
+			BeginFlashing(3);
+		}
+	}
+
+	void UpdateFlashing() {
+		if (!isFlashing) return;
+
+		if (Time.time - flashingStartTime > flashingLength) {
+			isFlashing = false;
+			animator.SetTrigger("Stop Flashing");
+		}
+	}
+
+	void BeginFlashing(float flashingLength) {
+		if (isFlashing) return;
+
+		animator.SetTrigger("Start Flashing");
+
+		this.flashingLength = flashingLength;
+
+		flashingStartTime = Time.time;
+
+		isFlashing = true;
+	}
+
+	void InfectBy(float infectionAmount) {
+		if (Time.time - lastDamageTime < postDamageCoolDown) return;
+
+		lastDamageTime = Time.time;
+
+		infection = Mathf.Min(infection + infectionAmount, 100);
+		if (infection == 100) Kill();
 	}
 
 	void UpdateJumpingAndFalling(ref Vector3 velocity) {
@@ -184,14 +234,6 @@ public class Player : MonoBehaviour {
 			animator.SetTrigger("Jump");
 			
 			velocity.y = Mathf.Sqrt(2f * jumpHeight * -manager.gravity * (isClimbing?0.5f:1));
-
-//			if ((controlManager.GetDown(ControlState.IsPressed) && currentGroundTile != null) && currentGroundTile.gameObject.layer == LayerMask.NameToLayer("OneWayGround")) {
-//				velocity.y = 0;
-//				StartCoroutine(TemporarilyTurnOffGroundCollisions(0.05f));
-//			}
-//			else {
-//				velocity.y = Mathf.Sqrt(2f * jumpHeight * -manager.gravity * (isClimbing?0.5f:1));
-//			}
 		}
 
 		// cut jump short if you release space early
@@ -246,7 +288,13 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void Die() {
+	void Jump() {
+		if (shouldJumpNextFrame) return;
+
+		shouldJumpNextFrame = true;
+	}
+
+	void Kill() {
 		if (isDead) return;
 
 		controller.usePhysicsForMovement = true;

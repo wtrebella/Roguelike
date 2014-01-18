@@ -10,32 +10,32 @@ public class TileData {
 	}
 
 	public static TileData CharToTileData(char c, Dictionary<char, float> randValsDict = null) {
-		TileData td = null;
-		
-		if (c == '0') {
-			td = new TileData();
-			td.tileType = TileType.Empty;
-		}
-		else if (c == '1') {
+		TileData td = new TileData();
+		td.tileType = TileType.Empty;
+
+		if (c == '1') {
 			td = new TileData();
 			td.tileType = TileType.Ground;
 		}
 		else if (c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9') {
 			td = new TileData();
 			if (randValsDict[c] < 0.5f) td.tileType = TileType.Ground;
-			else td.tileType = TileType.Empty;
 		}
 		else if (c == 'p') {
 			td = new TileDataWeapon();
 			(td as TileDataWeapon).weaponType = WeaponType.Pistol;
 		}
 		else if (c == 't') {
-			td = new TileDataEnemy();
-			(td as TileDataEnemy).enemyType = EnemyType.Turtle;
+			if (randValsDict[c] < 0.5f) {
+				td = new TileDataEnemy();
+				(td as TileDataEnemy).enemyType = EnemyType.Turtle;
+			}
 		}
 		else if (c == 'r') {
-			td = new TileDataEnemy();
-			(td as TileDataEnemy).enemyType = EnemyType.Rat;
+			if (randValsDict[c] < 0.5f) {
+				td = new TileDataEnemy();
+				(td as TileDataEnemy).enemyType = EnemyType.Rat;
+			}
 		}
 		
 		return td;
